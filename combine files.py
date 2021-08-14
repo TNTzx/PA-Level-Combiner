@@ -55,6 +55,12 @@ Make sure you've done the following:
 - Both levels must have the same music.
 """)
 
+creditstext = """
+Project and UI by @TNTz#7964.
+Combining script by @Rin Chiropteran#2065.
+JSON level format by @Xenon1345#6650.
+"""
+
 advanced_checkboxes = []
 advanced_names = [
     "Beatmap Objects",
@@ -68,8 +74,6 @@ advanced_values = []
 
 combining = ""
 advanced_selectedtext = tk.Canvas()
-
-creditstext = "Made by @Rin Chiropteran#2065 and @TNTz#7964."
 
 #functions
 #adds level to list
@@ -106,6 +110,12 @@ def askforoutput():
 def loading(x):
     with open(x, encoding="utf-8") as input_file:
         return json.load(input_file)
+
+def loadingmult(list):
+    var = []
+    for i in list:
+        var.append(loading(i))
+    return var
 
 
 def extract(object, path):
@@ -282,7 +292,6 @@ def callShowStats(type):
     showStats(lists)
 
 def showStats(file):
-    stats_window = wg.widgets(type="toplevel")
 
     stats_dfc_bias = -1
     stats_dfc_state = tk.IntVar()
@@ -292,6 +301,8 @@ def showStats(file):
     bg_objects = statsReturn(file, 0, "BG objects", "bg_objects")
     markers = statsReturn(file, 0, "Markers", "ed", "markers")
     checkpoints = statsReturn(file, stats_dfc_bias, "Checkpoints", "checkpoints")
+
+    stats_window = wg.widgets(type="toplevel")
 
     def updateStats(element):
         nonlocal stats_dfc_bias, checkpoints
@@ -307,10 +318,7 @@ def showStats(file):
     stats_dfc = wg.widgets(type="checkbutton", root=stats_window.call, row=1, text="Include starting checkpoint", variable=stats_dfc_state, command=lambda: updateStats("dfc"))
 
 def statsReturn(file, bias, string, *key):
-    var = []
-    for i in file:
-        var.append(loading(i))
-    return str(string + ": " + str(len(merge(var, *key)) + bias) + "\n")
+    return str(string + ": " + str(len(merge(loadingmult(file), *key)) + bias) + "\n")
 
 
 
@@ -332,12 +340,16 @@ wg.rowcolumnconfig(main, [1, 1, 1, 1, 1], [10, 1])
 
 #create frames
 frame_title = wg.widgets(type="labelframe", root=main, row=0, columnspan=2, rowweight=[3, 1], text="Title")
+
 frame_level = wg.widgets(type="labelframe", root=main, row=1, rowweight=[1, 1], columnweight=[100, 1, 50], text="Levels Select")
 frame_level_column2 = wg.widgets(type="frame", root=frame_level.call, column=2, rowspan=2, rowweight=[1, 1, 1], highlightthickness=0)
+
 frame_output = wg.widgets(type="labelframe", root=main, row=1, column=1, rowweight=[1, 1, 1], columnweight=[100, 1, 50], text="Output Select")
-frame_insadv = wg.widgets(type="labelframe", root=main, row=2, columnspan=2, columnweight=[1, 1], text="Instructions and Advanced")
-frame_combine = wg.widgets(type="labelframe", root=main, row=3, columnspan=2, text="Combine")
-frame_credits = wg.widgets(type="labelframe", root=main, row=4, columnspan=2, text="Credits")
+
+frame_insadvcomb = wg.widgets(type="frame", root=main, row=2, columnspan=2, columnweight=[1, 1], highlightthickness=0)
+frame_insadv = wg.widgets(type="labelframe", root=frame_insadvcomb.call, columnweight=[1, 1], text="Instructions and Advanced")
+frame_combine = wg.widgets(type="labelframe", root=frame_insadvcomb.call, column=1, text="Combine")
+frame_credits = wg.widgets(type="labelframe", root=main, row=3, columnspan=2, text="Credits")
 
 
 #create wg.widgets

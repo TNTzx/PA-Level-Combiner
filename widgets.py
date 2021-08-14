@@ -37,7 +37,9 @@ class widgets():
         #widget specific attributes
         command="", variable="", #set commands and variables
         orient="", attach="", #set scrollbar attributes
-        selectmode="single"): #set listbox attributes
+        selectmode="single", #set listbox attributes
+        length=100, mode="determinate" #set progressbar attributes
+        ): 
 
         fontstyle = font #apparently the attributes were dumb so i just went to do this
 
