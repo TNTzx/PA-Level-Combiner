@@ -25,8 +25,8 @@ main = tk.Tk()
 wg.padx = 5
 wg.pady = 5
 
-wg.fontsa = "Inconsolata"
-wg.fontsizemult = 11
+wg.font = "Inconsolata"
+wg.fontsizemult = 15
 
 version = "20.4.4 (Normal Branch)"
 
