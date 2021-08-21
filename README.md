@@ -14,9 +14,7 @@ Sometimes, parts of a level are split in different levels. This program combines
 2. Select levels to the list.
 3. Save output level.
 4. Choose the items you want to combine using the "Advanced" button.
-   If unchecked, the output will only get the attribute from the first level
-   (for example, if "markers" is unchecked, only the markers
-   from the first level would be copied to the second).
+   For example, if "markers" is unchecked, the markers won't be added to the output.
 4. Press the combine button!
 
 ### Make sure you've done the following:
