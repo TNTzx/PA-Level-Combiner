@@ -20,6 +20,6 @@ Sometimes, parts of a level are split in different levels. This program combines
 4. Press the combine button!
 
 ### Make sure you've done the following:
-- Have all the themes in both levels in your themes folder.
+- Have all the themes in the levels in your themes folder.
 - Delete objects on the second level that you don't want to be duplicated.
 - Both levels must have the same music.
