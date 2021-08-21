@@ -21,5 +21,5 @@ Sometimes, parts of a level are split in different levels. This program combines
 
 ### Make sure you've done the following:
 - Have all the themes in the levels in your themes folder.
-- Delete objects on the second level that you don't want to be duplicated.
+- Delete objects on the other levels that you don't want to be duplicated.
 - Both levels must have the same music.
