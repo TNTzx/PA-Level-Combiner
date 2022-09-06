@@ -1,0 +1,3 @@
+[submodule "tkinter-utils"]
+	path = tkinter-utils
+	url = https://github.com/TNTzx/tkinter-utils
