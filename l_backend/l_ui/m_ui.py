@@ -34,7 +34,7 @@ class MainWindow(tk.Toplevel):
         """Contains the combining controls."""
 
         class Options(tk.Button):
-            """Contains all combine options.""" # TODO
+            """Contains all combine options."""
 
         class Button(tk.Button):
             """The combine button."""
@@ -47,3 +47,6 @@ class MainWindow(tk.Toplevel):
 
         class About(tk.Button):
             """The about button."""
+
+        class Github(tk.Button):
+            """Opens the Github page."""
