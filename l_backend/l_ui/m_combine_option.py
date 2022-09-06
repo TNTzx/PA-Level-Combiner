@@ -6,13 +6,14 @@ from __future__ import annotations
 import tkinter as tk
 
 import l_tkinter_utils
+from l_tkinter_utils import l_utils
 
 
 class CombineOptionWindow(tk.Toplevel):
     """The element controls."""
     def __init__(self, parent: tk.Widget):
         super().__init__(parent)
-        l_tkinter_utils.window_set_size(self, 720, 720)
+        l_tkinter_utils.window_set_size(self, 1280, 720)
         l_tkinter_utils.window_center_to_screen(self)
         l_tkinter_utils.set_weights(self, y = (1, 1, 1))
 
@@ -40,45 +41,51 @@ class CombineOptionWindow(tk.Toplevel):
             """Defines a combine option set."""
             def __init__(self, parent: tk.Widget, options: list[str], label_title: str = "", label_desc: str = ""):
                 super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
+                l_tkinter_utils.set_weights(self, x = (1, 1))
 
-                self.w_title = self.Title(self, label_title)
+                self.w_title = self.Title(self, label_title, label_desc)
                 self.w_options = self.Options(self, options)
 
             class Title(l_tkinter_utils.Title):
                 """Title."""
                 def __init__(self, parent: tk.Widget, title: str, description: str = None):
-                    super().__init__(parent, title, description)
+                    super().__init__(parent, title, description, title_size_mult = 0.5)
                     l_tkinter_utils.place_on_grid(self)
 
             class Options(tk.Frame):
                 """Contains all options."""
-                def __init__(self, parent: tk.Widget, options_str: list[str]):
+                def __init__(self, parent: tk.Widget, options_strs: list[str]):
                     super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
                     l_tkinter_utils.place_on_grid(self, coords = (1, 0))
 
                     option_type = self.Option
                     self.w_options: list[option_type] = []
 
+                    self.update_options(options_strs)
+
                 class Option(tk.Checkbutton):
                     """The option checkbutton."""
                     def __init__(self, parent: tk.Widget, text: str):
                         self.variable = tk.IntVar()
-                        super().__init__(parent, text = text, variable = self.variable)
+                        super().__init__(parent, text = text, variable = self.variable, anchor = tk.LEFT)
                         self.text = text
 
 
-                def update_options(self, options_str: list[str]):
+                def update_options(self, option_strs: list[str]):
                     """Updates the options."""
                     for w_option in self.w_options:
                         w_option.destroy()
 
                     self.w_options.clear()
 
-                    for idx, option_str in enumerate(options_str):
+                    for idx, option_str in enumerate(option_strs):
                         w_option = self.Option(self, text = option_str)
                         l_tkinter_utils.place_on_grid(w_option, coords = (0, idx))
                         self.w_options.append(w_option)
-                
+
+                    l_utils.set_weights(self, y = (1 for _ in option_strs))
+
+
                 def get_option_strs(self):
                     """Gets the option strings."""
                     return [w_option.text for w_option in self.w_options]
