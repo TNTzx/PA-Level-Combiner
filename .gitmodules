@@ -2,5 +2,5 @@
 	path = l_tkinter_utils
 	url = https://github.com/TNTzx/tkinter-utils
 [submodule "PA-Classes-Simple"]
-	path = PA-Classes-Simple
+	path = l_pa_cls_simple
 	url = https://github.com/TNTzx/PA-Classes-Simple
