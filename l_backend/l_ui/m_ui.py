@@ -11,7 +11,7 @@ class MainWindow(tk.Toplevel):
 
     class Title(l_tkinter_utils.Title):
         """The title."""
-    
+
     class LevelSelect(tk.Frame):
         """The level select."""
 
@@ -26,18 +26,24 @@ class MainWindow(tk.Toplevel):
 
     class Output(l_tkinter_utils.EntryBrowseForm):
         """The output folder form."""
-    
+
     class VersionSelect(l_tkinter_utils.OptionMenuForm):
         """The version select dropdown."""
-    
-    class Combine(tk.Frame):
-        """Contains the combine button."""
-        
+
+    class CombineControls(tk.Frame):
+        """Contains the combining controls."""
+
+        class Options(tk.Button):
+            """Contains all combine options.""" # TODO
+
         class Button(tk.Button):
             """The combine button."""
-    
+
     class MiscButtons(tk.Frame):
         """Contains all the miscellaneous buttons."""
-        
+
+        class Instructions(tk.Button):
+            """Shows the instructions on how to use."""
+
         class About(tk.Button):
             """The about button."""
