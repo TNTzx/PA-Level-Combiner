@@ -13,7 +13,7 @@ class CombineOptionWindow(tk.Toplevel):
     """The element controls."""
     def __init__(self, parent: tk.Widget):
         super().__init__(parent)
-        l_tkinter_utils.window_set_size(self, 1280, 720)
+        l_tkinter_utils.window_set_size(self, 900, 480)
         l_tkinter_utils.window_center_to_screen(self)
         l_tkinter_utils.set_weights(self, y = (1, 1, 1))
 
@@ -49,7 +49,7 @@ class CombineOptionWindow(tk.Toplevel):
             class Title(l_tkinter_utils.Title):
                 """Title."""
                 def __init__(self, parent: tk.Widget, title: str, description: str = None):
-                    super().__init__(parent, title, description, title_size_mult = 0.5)
+                    super().__init__(parent, title, description, title_size_mult = 0.6)
                     l_tkinter_utils.place_on_grid(self)
 
             class Options(tk.Frame):
@@ -66,8 +66,9 @@ class CombineOptionWindow(tk.Toplevel):
                 class Option(tk.Checkbutton):
                     """The option checkbutton."""
                     def __init__(self, parent: tk.Widget, text: str):
-                        self.variable = tk.IntVar()
-                        super().__init__(parent, text = text, variable = self.variable, anchor = tk.LEFT)
+                        self.variable = tk.IntVar(value = 1)
+                        super().__init__(parent, text = text, variable = self.variable, anchor = tk.W)
+                        l_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.2))
                         self.text = text
 
 
@@ -93,7 +94,7 @@ class CombineOptionWindow(tk.Toplevel):
                 def get_result(self):
                     """Gets the result."""
                     return {
-                        w_option.text: True if w_option.variable.get() == 1 else False
+                        w_option.text: bool(w_option.variable.get())
                         for w_option in self.w_options
                     }
 
@@ -110,7 +111,11 @@ class CombineOptionWindow(tk.Toplevel):
                         "Event Keyframes",
                         "BG Objects"
                     ],
-                    label_title = "Include:"
+                    label_title = "Include:",
+                    label_desc = (
+                        "If on, it will be taken from all levels and added to the combined level.\n"
+                        "If off, it won't be included in the combined level."
+                    )
                 )
                 l_tkinter_utils.place_on_grid(self)
 
@@ -125,8 +130,8 @@ class CombineOptionWindow(tk.Toplevel):
                     ],
                     label_title = "Delete First:",
                     label_desc = (
-                        "If on, this deletes the first checkpoint / event keyframe from all other levels other than the source level.\n"
-                        "If off, this keeps the first checkpoints / event keyframes from all levels, essentially having duplicate first checkpoints / event keyframes."
+                        "If on, it will be deleted from all other levels other than the source level.\n"
+                        "If off, it will be kept for all levels, essentially having duplicates."
                     )
                 )
                 l_tkinter_utils.place_on_grid(self, coords = (1, 0))
@@ -137,6 +142,9 @@ class CombineOptionWindow(tk.Toplevel):
             super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
             l_tkinter_utils.place_on_grid(self, coords = (0, 2))
             l_tkinter_utils.set_weights(self, x = (1, 1))
+
+            self.w_confirm = self.Confirm(self)
+            self.w_cancel = self.Cancel(self)
 
         class Confirm(tk.Button):
             """The confirm button."""
@@ -149,5 +157,5 @@ class CombineOptionWindow(tk.Toplevel):
             """The cancel button."""
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent, text = "Cancel")
-                l_tkinter_utils.place_on_grid(self)
+                l_tkinter_utils.place_on_grid(self, coords = (1, 0))
                 l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.5))
