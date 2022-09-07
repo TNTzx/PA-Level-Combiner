@@ -7,6 +7,8 @@ import tkinter.ttk as ttk
 import l_tkinter_utils
 import l_pa_cls_simple
 
+from . import m_simple
+
 
 class MainWindow(tk.Toplevel):
     """The main window."""
@@ -29,6 +31,12 @@ class MainWindow(tk.Toplevel):
         def __init__(self, parent: tk.Widget):
             super().__init__(parent)
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
+            l_tkinter_utils.notebook_set_style(self)
+
+            frames = [
+                l_tkinter_utils.NotebookFrameInfo("Simple", m_simple.SimpleView(self))
+            ]
+            l_tkinter_utils.notebook_add_frames(self, frames)
 
     class CombineControls(tk.Frame):
         """Contains the combining controls."""

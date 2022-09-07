@@ -16,8 +16,6 @@ class SimpleView(tk.Frame):
         self.w_version_select = self.VersionSelect(self)
         self.w_level_select = self.LevelSelect(self)
         self.w_output = self.Output(self)
-        self.w_combine_controls = self.CombineControls(self)
-        self.w_misc_buttons = self.MiscButtons(self)
 
     class VersionSelect(l_tkinter_utils.OptionMenuForm):
         """The version select dropdown."""
@@ -30,13 +28,13 @@ class SimpleView(tk.Frame):
                 ],
                 initial = "Select PA Version..."
             )
-            l_tkinter_utils.place_on_grid(self, coords = (0, 1))
+            l_tkinter_utils.place_on_grid(self)
 
     class LevelSelect(tk.Frame):
         """The level select."""
         def __init__(self, parent: tk.Widget):
             super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
-            l_tkinter_utils.place_on_grid(self, coords = (0, 2))
+            l_tkinter_utils.place_on_grid(self, coords = (0, 1))
             l_tkinter_utils.set_weights(self, x = (3, 1), y = (1, 2))
 
             self.w_title = self.Title(self)
@@ -65,4 +63,4 @@ class SimpleView(tk.Frame):
         """The output folder form."""
         def __init__(self, parent: tk.Widget):
             super().__init__(parent, label_text = "Output Level Folder")
-            l_tkinter_utils.place_on_grid(self, coords = (0, 3))
+            l_tkinter_utils.place_on_grid(self, coords = (0, 2))
