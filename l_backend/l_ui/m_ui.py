@@ -5,7 +5,6 @@ import tkinter as tk
 import tkinter.ttk as ttk
 
 import l_tkinter_utils
-import l_pa_cls_simple
 
 from . import m_simple
 
@@ -14,11 +13,14 @@ class MainWindow(tk.Toplevel):
     """The main window."""
     def __init__(self, parent: tk.Widget):
         super().__init__(parent)
-        l_tkinter_utils.set_weights(self, y = (1 for _ in range(6)))
+        l_tkinter_utils.set_weights(self, y = (1 for _ in range(4)))
         l_tkinter_utils.window_set_size(self, 1280, 720)
         l_tkinter_utils.window_center_to_screen(self)
 
         self.w_title = self.Title(self)
+        self.w_view_manager = self.ViewManager(self)
+        self.w_combine_controls = self.CombineControls(self)
+        self.w_misc_buttons = self.MiscButtons(self)
 
     class Title(l_tkinter_utils.Title):
         """The title."""
@@ -53,14 +55,14 @@ class MainWindow(tk.Toplevel):
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent, text = "Combining Options...")
                 l_tkinter_utils.place_on_grid(self)
-                l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.5))
+                l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.2))
 
         class Button(tk.Button):
             """The combine button."""
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent, text = "Combine!")
                 l_tkinter_utils.place_on_grid(self, coords = (1, 0))
-                l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.5, bold = True))
+                l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.2, bold = True))
 
     class MiscButtons(tk.Frame):
         """Contains all the miscellaneous buttons."""

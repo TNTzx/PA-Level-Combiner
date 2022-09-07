@@ -23,6 +23,7 @@ class SimpleView(tk.Frame):
             super().__init__(
                 parent,
                 label_text = "PA Version",
+                label_size_mult = 1.5,
                 options = [
                     version.get_description() for version in l_pa_cls_simple.PAVersion.get_all_versions()
                 ],
@@ -44,7 +45,7 @@ class SimpleView(tk.Frame):
         class Title(l_tkinter_utils.Title):
             """The level select title."""
             def __init__(self, parent: tk.Widget):
-                super().__init__(parent, title = "Level Folder List", title_size_mult = 0.5)
+                super().__init__(parent, title = "Level Folder List", title_size_mult = 0.3)
                 l_tkinter_utils.place_on_grid(self, span_set = (2, 1))
 
         class LevelList(l_tkinter_utils.ScrolledListbox):
@@ -62,5 +63,5 @@ class SimpleView(tk.Frame):
     class Output(l_tkinter_utils.EntryBrowseForm):
         """The output folder form."""
         def __init__(self, parent: tk.Widget):
-            super().__init__(parent, label_text = "Output Level Folder")
+            super().__init__(parent, label_text = "Output Level Folder", label_size_mult = 1.5)
             l_tkinter_utils.place_on_grid(self, coords = (0, 2))
