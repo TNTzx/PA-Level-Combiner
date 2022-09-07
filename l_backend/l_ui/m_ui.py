@@ -6,7 +6,7 @@ import tkinter.ttk as ttk
 
 import l_tkinter_utils
 
-from . import m_simple
+from . import m_simple, m_advanced
 
 
 class MainWindow(tk.Toplevel):
@@ -36,7 +36,8 @@ class MainWindow(tk.Toplevel):
             l_tkinter_utils.notebook_set_style(self)
 
             frames = [
-                l_tkinter_utils.NotebookFrameInfo("Simple", m_simple.SimpleView(self))
+                l_tkinter_utils.NotebookFrameInfo("Simple", m_simple.SimpleView(self)),
+                l_tkinter_utils.NotebookFrameInfo("Advanced", m_advanced.AdvancedView(self))
             ]
             l_tkinter_utils.notebook_add_frames(self, frames)
 
