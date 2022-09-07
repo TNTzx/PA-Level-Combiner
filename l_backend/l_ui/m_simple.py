@@ -47,6 +47,8 @@ class SimpleView(tk.Frame):
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
             l_tkinter_utils.set_weights(self, x = (3, 1), y = (1, 2))
 
+            self.w_parent = parent
+
             self.w_title = self.Title(self)
             self.w_level_list = self.LevelList(self)
             self.w_edit_buttons = self.EditButtons(self)
@@ -93,12 +95,16 @@ class SimpleView(tk.Frame):
             self._level_folder_paths.append(path)
             self.update_listbox()
 
+        @_update_wrapper
         def edit_level_folder(self):
             """Edits a level folder."""
-            self.update_listbox()
             selected = l_tkinter_utils.listbox_get_selected(self.w_level_list.w_listbox, self._level_folder_paths)
+            if len(selected) != 1:
+                l_tkinter_utils.error_messagebox(self.w_parent, "You must select one and only one item to edit.")
+            selected: str = selected[0]
 
             class EntryBrowseForm(l_tkinter_utils.EntryBrowseForm):
+                """Form......"""
                 def __init__(self, parent: tk.Widget):
                     super().__init__(
                         parent,
@@ -106,8 +112,35 @@ class SimpleView(tk.Frame):
                         label_size_mult = 1,
                         initial = selected
                     )
-            
-            
+
+            form_result = l_tkinter_utils.form_messagebox(self.w_parent, EntryBrowseForm)
+
+            if form_result is None:
+                return
+
+            selected_index = self._level_folder_paths.index(selected)
+            self._level_folder_paths[selected_index] = form_result
+
+
+        @_update_wrapper
+        def delete_level_folder(self):
+            """Deletes the selected level folder."""
+            selected_items = l_tkinter_utils.listbox_get_selected(self.w_level_list.w_listbox, self._level_folder_paths)
+            if len(selected_items) == 0:
+                l_tkinter_utils.error_messagebox(self.w_parent, "You must select at least one item to delete.")
+
+            confirm = l_tkinter_utils.messagebox(
+                self.w_parent,
+                title = "Are you sure you want to delete these level folders?",
+                description = "\n".join(selected_items),
+                options = (l_tkinter_utils.Options.yes, l_tkinter_utils.Options.no)
+            )
+
+            if confirm == l_tkinter_utils.Options.no:
+                return
+
+            for selected_item_idx in l_tkinter_utils.listbox_get_selected_idx(self.w_level_list.w_listbox):
+                del self._level_folder_paths[selected_item_idx]
 
 
         def get_level_folders(self):
