@@ -6,12 +6,16 @@ import tkinter.ttk as ttk
 
 import l_tkinter_utils
 
+from .. import l_library
 from . import m_simple, m_advanced
 
 
 class MainWindow(tk.Toplevel):
     """The main window."""
-    def __init__(self, parent: tk.Widget):
+    def __init__(self, parent: tk.Widget, combine_job: l_library.CombineJob = None):
+        if combine_job is None:
+            combine_job = l_library.CombineJob()
+
         super().__init__(parent)
         l_tkinter_utils.set_weights(self, y = (1 for _ in range(4)))
         l_tkinter_utils.window_set_size(self, 1280, 720)
@@ -21,6 +25,7 @@ class MainWindow(tk.Toplevel):
         self.w_view_manager = self.ViewManager(self)
         self.w_combine_controls = self.CombineControls(self)
         self.w_misc_buttons = self.MiscButtons(self)
+
 
         self.w_simple = self.w_view_manager.w_simple
         self.w_advanced = self.w_view_manager.w_advanced
@@ -35,6 +40,9 @@ class MainWindow(tk.Toplevel):
 
         self.w_view_manager.w_simple.w_version_select.on_change = self.set_requires_version_update
         self.set_requires_version_update()
+
+
+        self.combine_job = combine_job
 
     class Title(l_tkinter_utils.Title):
         """The title."""

@@ -8,6 +8,7 @@ class CombineJob(l_pa_cls_simple.PAObject):
     """Represents a combine job."""
     def __init__(
             self,
+            version: type[l_pa_cls_simple.PAVersion] = l_pa_cls_simple.v20_4_4,
             level_folders: list[l_pa_cls_simple.LevelFolder] = None,
             base_level_folder: l_pa_cls_simple.LevelFolder | None = None,
             output_folder: str | None = None,
