@@ -80,7 +80,7 @@ class MainWindow(tk.Toplevel):
         """Contains the combining controls."""
         def __init__(self, parent: tk.Widget):
             super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
-            l_tkinter_utils.place_on_grid(self, coords = (0, 4)) # TODO
+            l_tkinter_utils.place_on_grid(self, coords = (0, 4))
             l_tkinter_utils.set_weights(self, x = (1, 1))
 
             self.w_options = self.Options(self)
@@ -91,14 +91,14 @@ class MainWindow(tk.Toplevel):
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent, text = "Combining Options...")
                 l_tkinter_utils.place_on_grid(self)
-                l_tkinter_utils.set_font(self)
+                l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.5))
 
         class Button(tk.Button):
             """The combine button."""
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent, text = "Combine!")
                 l_tkinter_utils.place_on_grid(self, coords = (1, 0))
-                l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(bold = True))
+                l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.5, bold = True))
 
     class MiscButtons(tk.Frame):
         """Contains all the miscellaneous buttons."""
