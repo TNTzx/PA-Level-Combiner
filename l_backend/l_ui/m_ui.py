@@ -25,7 +25,7 @@ class MainWindow(tk.Toplevel):
     class Title(l_tkinter_utils.Title):
         """The title."""
         def __init__(self, parent: tk.Widget):
-            super().__init__(parent, title = "PA Level Combiner", description = "A program used to combine levels.")
+            super().__init__(parent, title = "PA Level Combiner")
             l_tkinter_utils.place_on_grid(self)
 
     class ViewManager(ttk.Notebook):

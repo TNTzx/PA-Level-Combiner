@@ -45,7 +45,7 @@ class SimpleView(tk.Frame):
         class Title(l_tkinter_utils.Title):
             """The level select title."""
             def __init__(self, parent: tk.Widget):
-                super().__init__(parent, title = "Level Folder List", title_size_mult = 0.3)
+                super().__init__(parent, title = "Level Folder List", title_size_mult = 0.5)
                 l_tkinter_utils.place_on_grid(self, span_set = (2, 1))
 
         class LevelList(l_tkinter_utils.ScrolledListbox):
