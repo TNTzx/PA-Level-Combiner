@@ -22,6 +22,20 @@ class MainWindow(tk.Toplevel):
         self.w_combine_controls = self.CombineControls(self)
         self.w_misc_buttons = self.MiscButtons(self)
 
+        self.w_simple = self.w_view_manager.w_simple
+        self.w_advanced = self.w_view_manager.w_advanced
+
+        self.w_requires_version = [
+            self.w_simple.w_level_select,
+            self.w_simple.w_output,
+
+            self.w_advanced.w_base_level,
+            self.w_advanced.w_current_source_level
+        ]
+
+        self.w_view_manager.w_simple.w_version_select.on_change = self.set_requires_version_update
+        self.set_requires_version_update()
+
     class Title(l_tkinter_utils.Title):
         """The title."""
         def __init__(self, parent: tk.Widget):
@@ -35,9 +49,12 @@ class MainWindow(tk.Toplevel):
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
             l_tkinter_utils.notebook_set_style(self)
 
+            self.w_simple = m_simple.SimpleView(self)
+            self.w_advanced = m_advanced.AdvancedView(self)
+
             frames = [
-                l_tkinter_utils.NotebookFrameInfo("Simple", m_simple.SimpleView(self)),
-                l_tkinter_utils.NotebookFrameInfo("Advanced", m_advanced.AdvancedView(self))
+                l_tkinter_utils.NotebookFrameInfo("Simple", self.w_simple),
+                l_tkinter_utils.NotebookFrameInfo("Advanced", self.w_advanced)
             ]
             l_tkinter_utils.notebook_add_frames(self, frames)
 
@@ -96,3 +113,13 @@ class MainWindow(tk.Toplevel):
                 super().__init__(parent, text = "Open Github Page...")
                 l_tkinter_utils.place_on_grid(self, coords = (2, 0))
                 l_tkinter_utils.set_font(self)
+
+
+    def set_active_requires_version(self, active: bool):
+        """Sets the activity of the widgets that requires the version field to be filled."""
+        for widget in self.w_requires_version:
+            l_tkinter_utils.set_active(widget, active)
+
+    def set_requires_version_update(self):
+        """Updates the widgets that requires the version field to be filled."""
+        self.set_active_requires_version(self.w_view_manager.w_simple.w_version_select.is_filled())

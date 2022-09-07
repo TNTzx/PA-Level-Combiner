@@ -15,12 +15,7 @@ class SimpleView(tk.Frame):
 
         self.w_level_select = self.LevelSelect(self)
         self.w_output = self.Output(self)
-
-        self.w_requires_version = [self.w_level_select, self.w_output]
-
         self.w_version_select = self.VersionSelect(self)
-        self.w_version_select.on_change = self.set_requires_version_update
-        self.set_requires_version_update()
 
     class VersionSelect(l_tkinter_utils.OptionMenuForm):
         """The version select dropdown."""
@@ -70,13 +65,3 @@ class SimpleView(tk.Frame):
         def __init__(self, parent: tk.Widget):
             super().__init__(parent, label_text = "Output Level Folder", label_size_mult = 1.5)
             l_tkinter_utils.place_on_grid(self, coords = (0, 2))
-
-
-    def set_active_requires_version(self, active: bool):
-        """Sets the activity of the widgets that requires the version field to be filled."""
-        for widget in self.w_requires_version:
-            l_tkinter_utils.set_active(widget, active)
-
-    def set_requires_version_update(self):
-        """Updates the widgets that requires the version field to be filled."""
-        self.set_active_requires_version(self.w_version_select.is_filled())
