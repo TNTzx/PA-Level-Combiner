@@ -20,7 +20,7 @@ class SimpleView(tk.Frame):
 
         self.w_version_select = self.VersionSelect(self)
         self.w_version_select.on_change = self.set_requires_version_update
-        self.set_active_requires_version(False)
+        self.set_requires_version_update()
 
     class VersionSelect(l_tkinter_utils.OptionMenuForm):
         """The version select dropdown."""
