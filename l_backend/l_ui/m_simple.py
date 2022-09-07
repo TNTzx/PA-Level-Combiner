@@ -96,6 +96,8 @@ class SimpleView(tk.Frame):
         def add_level_folder(self):
             """Adds a level folder."""
             path = tkfd.askdirectory(title = "Select a folder containing a level")
+            if path == "":
+                return
             self._level_folder_paths.append(path)
 
 
@@ -118,6 +120,9 @@ class SimpleView(tk.Frame):
                         initial = selected
                     )
 
+                def browse(self) -> str:
+                    return tkfd.askdirectory(title = "Choose a level folder.")
+
             form_result = l_tkinter_utils.form_messagebox(self.w_parent, EntryBrowseForm)
 
             if form_result is None:
@@ -137,8 +142,8 @@ class SimpleView(tk.Frame):
 
             confirm = l_tkinter_utils.messagebox(
                 self.w_parent,
-                title = "Are you sure you want to delete these level folders?",
-                description = "\n".join(selected_items),
+                title = "Deleting Level Folders",
+                description = "Are you sure you want to delete these level folders?\n" + "\n".join(selected_items),
                 options = (l_tkinter_utils.Options.yes, l_tkinter_utils.Options.no)
             )
 
