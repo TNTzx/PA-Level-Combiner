@@ -36,7 +36,8 @@ class MainWindow(tk.Toplevel):
                 label_text = "PA Version",
                 options = [
                     version.get_description() for version in l_pa_cls_simple.PAVersion.get_all_versions()
-                ]
+                ],
+                initial = "Select PA Version..."
             )
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
 
@@ -45,7 +46,7 @@ class MainWindow(tk.Toplevel):
         def __init__(self, parent: tk.Widget):
             super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
             l_tkinter_utils.place_on_grid(self, coords = (0, 2))
-            l_tkinter_utils.set_weights(self, x = (2, 1), y = (1, 1))
+            l_tkinter_utils.set_weights(self, x = (3, 1), y = (1, 2))
 
             self.w_title = self.Title(self)
             self.w_level_list = self.LevelList(self)
@@ -54,7 +55,7 @@ class MainWindow(tk.Toplevel):
         class Title(l_tkinter_utils.Title):
             """The level select title."""
             def __init__(self, parent: tk.Widget):
-                super().__init__(parent, title = "Level Folder List")
+                super().__init__(parent, title = "Level Folder List", title_size_mult = 0.5)
                 l_tkinter_utils.place_on_grid(self, span_set = (2, 1))
 
         class LevelList(l_tkinter_utils.ScrolledListbox):
@@ -115,15 +116,18 @@ class MainWindow(tk.Toplevel):
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent, text = "Instructions...")
                 l_tkinter_utils.place_on_grid(self)
+                l_tkinter_utils.set_font(self)
 
         class About(tk.Button):
             """The about button."""
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent, text = "About...")
                 l_tkinter_utils.place_on_grid(self, coords = (1, 0))
+                l_tkinter_utils.set_font(self)
 
         class Github(tk.Button):
             """Opens the Github page."""
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent, text = "Open Github Page...")
                 l_tkinter_utils.place_on_grid(self, coords = (2, 0))
+                l_tkinter_utils.set_font(self)
