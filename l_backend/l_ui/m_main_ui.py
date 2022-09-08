@@ -46,9 +46,7 @@ class MainWindow(tk.Toplevel):
         self.w_requires_version = [
             self.w_simple.w_level_select,
             self.w_simple.w_output,
-
-            self.w_advanced.w_base_level,
-            self.w_advanced.w_current_source_level
+            self.w_advanced
         ]
 
         self.w_simple.w_version_select.on_change = self._version_select_bind

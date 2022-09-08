@@ -28,12 +28,21 @@ class AdvancedView(tk.Frame):
             )
             l_tkinter_utils.place_on_grid(self)
 
-    class Options(tk.Button):
-        """Contains all combine options."""
+    class Options(tk.Frame):
+        """Contains the button for options."""
         def __init__(self, parent: tk.Widget):
-            super().__init__(parent, text = "Combining Options...")
+            super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
-            l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.2))
+            l_tkinter_utils.set_weights(self)
+
+            self.w_button = self.Button(self)
+
+        class Button(tk.Button):
+            """Shows the combine options."""
+            def __init__(self, parent: tk.Widget):
+                super().__init__(parent, text = "Combining Options...")
+                l_tkinter_utils.place_on_grid(self)
+                l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.2))
 
     class BaseLevel(l_tkinter_utils.EntryBrowseForm):
         """Base level entry."""
