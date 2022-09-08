@@ -3,7 +3,10 @@
 
 from __future__ import annotations
 
+import copy
+
 import tkinter as tk
+import l_pa_cls_simple
 
 import l_tkinter_utils
 from l_tkinter_utils import l_utils
@@ -11,15 +14,41 @@ from l_tkinter_utils import l_utils
 
 class CombineOptionWindow(tk.Toplevel):
     """The element controls."""
-    def __init__(self, parent: tk.Widget):
+    def __init__(self, parent: tk.Widget, combine_settings: l_pa_cls_simple.CombineSettings = None):
+        if combine_settings is None:
+            combine_settings = l_pa_cls_simple.CombineSettings()
+
         super().__init__(parent)
         l_tkinter_utils.window_set_size(self, 900, 480)
         l_tkinter_utils.window_center_to_screen(self)
         l_tkinter_utils.set_weights(self, y = (1, 1, 1))
 
+        self.w_parent = parent
+
         self.w_title = self.Title(self)
         self.w_combine_options = self.CombineOptions(self)
         self.w_confirm_cancel = self.ConfirmCancel(self)
+
+
+        self.include_options = self.w_combine_options.w_include.w_options.w_options
+        include_values = [
+            combine_settings.include_beatmap_objects,
+            combine_settings.include_prefabs,
+            combine_settings.include_markers,
+            combine_settings.include_checkpoints,
+            combine_settings.include_event_keyframes,
+            combine_settings.include_bg_objects
+        ]
+        for idx, delete_first_value in enumerate(include_values):
+            self.include_options[idx].set_value(delete_first_value)
+
+        self.delete_first_options = self.w_combine_options.w_delete_first.w_options.w_options
+        delete_first_values = [
+            combine_settings.delete_first_checkpoint,
+            combine_settings.delete_first_event_keyframes
+        ]
+        for idx, delete_first_value in enumerate(delete_first_values):
+            self.delete_first_options[idx].set_value(delete_first_value)
 
     class Title(l_tkinter_utils.Title):
         """Title."""
@@ -70,6 +99,14 @@ class CombineOptionWindow(tk.Toplevel):
                         super().__init__(parent, text = text, variable = self.variable, anchor = tk.W)
                         l_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.2))
                         self.text = text
+
+                    def set_value(self, value: bool):
+                        """Sets the value of this option."""
+                        self.variable.set(1 if value else 0)
+
+                    def get_value(self):
+                        """Gets the value of this option."""
+                        return bool(self.variable.get())
 
 
                 def update_options(self, option_strs: list[str]):
@@ -159,3 +196,47 @@ class CombineOptionWindow(tk.Toplevel):
                 super().__init__(parent, text = "Cancel")
                 l_tkinter_utils.place_on_grid(self, coords = (1, 0))
                 l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.5))
+
+
+    def get_combine_settings(self):
+        """Gets the combine settings according to this form."""
+        def get_value(options: list[self.CombineOptions.CombineOptionSet.Options.Option], idx: int):
+            """Gets the value of the option in a list with index."""
+            return options[idx].get_value()
+
+        def get_value_include(idx: int):
+            """Gets the value of the include option with index."""
+            return get_value(self.include_options, idx)
+
+        def get_value_delete_first(idx: int):
+            """Gets the value of the delete first option with index."""
+            return get_value(self.delete_first_options, idx)
+
+        return l_pa_cls_simple.CombineSettings(
+            include_beatmap_objects = get_value_include(0),
+            include_prefabs = get_value_include(1),
+            include_markers = get_value_include(2),
+            include_checkpoints = get_value_include(3),
+            include_event_keyframes = get_value_include(4),
+            include_bg_objects = get_value_include(5),
+
+            delete_first_checkpoint = get_value_delete_first(0),
+            delete_first_event_keyframes = get_value_delete_first(1),
+        )
+
+
+    def show(self):
+        """Shows this window then returns the combine settings when done."""
+        l_tkinter_utils.window_wait_active(self.w_parent, self)
+        return self.get_combine_settings()
+
+
+def show_combine_option(parent: tk.Widget, original_combine_settings: l_pa_cls_simple.CombineSettings = None):
+    """Shows the combine option window then returns combine settings when closed."""
+    if original_combine_settings is None:
+        original_combine_settings = l_pa_cls_simple.CombineSettings()
+
+    new_combine_settings = copy.deepcopy(original_combine_settings)
+
+    w_combine_option = CombineOptionWindow(parent, new_combine_settings)
+    return w_combine_option.show()
