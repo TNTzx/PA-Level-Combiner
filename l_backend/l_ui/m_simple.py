@@ -45,7 +45,7 @@ class SimpleView(tk.Frame):
 
             super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
-            l_tkinter_utils.set_weights(self, x = (3, 1), y = (1, 2))
+            l_tkinter_utils.set_weights(self, x = (3, 1, 1), y = (1, 2))
 
             self.w_parent = parent
 
@@ -57,13 +57,18 @@ class SimpleView(tk.Frame):
             self.w_edit_buttons.edit = self.edit_level_folder
             self.w_edit_buttons.remove = self.remove_level_folder
 
+            self.w_select_buttons = self.SelectButtons(self)
+            self.w_select_buttons.sel_all = lambda: self.set_select_all(True)
+            self.w_select_buttons.sel_none = lambda: self.set_select_all(False)
+
+
             self._level_folder_paths = level_folder_paths
 
         class Title(l_tkinter_utils.Title):
             """The level select title."""
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent, title = "Level Folder List", title_size_mult = 0.5)
-                l_tkinter_utils.place_on_grid(self, span_set = (2, 1))
+                l_tkinter_utils.place_on_grid(self, span_set = (3, 1))
 
         class LevelList(l_tkinter_utils.ScrolledListbox):
             """The level list."""
@@ -76,6 +81,12 @@ class SimpleView(tk.Frame):
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent, item_label = "Level Folder")
                 l_tkinter_utils.place_on_grid(self, coords = (1, 1))
+
+        class SelectButtons(l_tkinter_utils.SelectControls):
+            """Contains select controls."""
+            def __init__(self, parent: tk.Widget):
+                super().__init__(parent)
+                l_tkinter_utils.place_on_grid(self, coords = (1, 2))
 
 
         def update_listbox(self):
@@ -152,6 +163,11 @@ class SimpleView(tk.Frame):
 
             for selected_item_idx in l_tkinter_utils.listbox_get_selected_idx(self.w_level_list.w_listbox):
                 del self._level_folder_paths[selected_item_idx]
+
+
+        def set_select_all(self, select_all: bool):
+            """Selects or deselects all items in the listbox."""
+            l_tkinter_utils.listbox_set_select_all(self.w_level_list.w_listbox, select_all)
 
 
         def get_level_folders(self):
