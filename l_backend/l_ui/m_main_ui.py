@@ -54,6 +54,7 @@ class MainWindow(tk.Toplevel):
         self.w_simple.w_version_select.on_change = self._version_select_bind
         self.set_requires_version_update()
         self.previous_selected_version = self.w_simple.w_version_select.get_result()
+        self._version_select_bind_trigger = True
 
         level_select_edit_buttons = self.w_simple.w_level_select.w_edit_buttons
         level_select_edit_buttons.add = self.add_level_folder
@@ -149,6 +150,10 @@ class MainWindow(tk.Toplevel):
 
     def _version_select_bind(self):
         """Called when version select is changed."""
+        if not self._version_select_bind_trigger:
+            self._version_select_bind_trigger = True
+            return
+
         if len(self.level_folder_paths) > 0:
             confirm = l_tkinter_utils.messagebox(
                 self,
@@ -160,6 +165,7 @@ class MainWindow(tk.Toplevel):
                 options = (l_tkinter_utils.Options.confirm, l_tkinter_utils.Options.cancel)
             )
             if confirm == l_tkinter_utils.Options.cancel:
+                self._version_select_bind_trigger = False
                 self.w_simple.w_version_select.w_option_menu.variable.set(self.previous_selected_version)
                 return
 
