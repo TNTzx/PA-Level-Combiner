@@ -60,6 +60,9 @@ class MainWindow(tk.Toplevel):
         level_select_sel_buttons.sel_all = lambda: self.set_select_all(True)
         level_select_sel_buttons.sel_none = lambda: self.set_select_all(False)
 
+        base_level_form = self.w_advanced.w_base_level
+        base_level_form.on_change = self._update_source_level_wrapper(base_level_form.on_change)
+
 
         self.level_folder_paths = combine_job.level_folder_paths
 
@@ -152,6 +155,29 @@ class MainWindow(tk.Toplevel):
         self.set_active_requires_version(self.w_view_manager.w_simple.w_version_select.is_filled())
 
 
+    def update_source_level(self):
+        """Updates the source level."""
+        base_level_form = self.w_advanced.w_base_level
+        current_source_level = self.w_advanced.w_current_source_level
+
+        if base_level_form.is_filled():
+            current_source_level.update_text(True, "Base Level", base_level_form.get_result())
+        elif len(self.level_folder_paths) > 0:
+            current_source_level.update_text(True, "First Level", self.level_folder_paths[0])
+        else:
+            current_source_level.update_text(False)
+
+    @staticmethod
+    def _update_source_level_wrapper(func: typ.Callable):
+        """Update source level wrapper."""
+        def wrapper(self: MainWindow):
+            func(self)
+            self.update_source_level()
+
+        return wrapper
+
+
+    @_update_source_level_wrapper
     def update_level_listbox(self):
         """Updates the listbox with the level folder paths."""
         l_tkinter_utils.listbox_update(
@@ -160,7 +186,7 @@ class MainWindow(tk.Toplevel):
         )
 
     @staticmethod
-    def update_wrapper(func: typ.Callable):
+    def _update_wrapper(func: typ.Callable):
         """Adds the update listbox method to the end."""
         def wrapper(self: MainWindow):
             func(self)
@@ -169,7 +195,7 @@ class MainWindow(tk.Toplevel):
         return wrapper
 
 
-    @update_wrapper
+    @_update_wrapper
     def add_level_folder(self):
         """Adds a level folder."""
         path = tkfd.askdirectory(title = "Select a folder containing a level")
@@ -178,7 +204,7 @@ class MainWindow(tk.Toplevel):
         self.level_folder_paths.append(path)
 
 
-    @update_wrapper
+    @_update_wrapper
     def edit_level_folder(self):
         """Edits a level folder."""
         selected = l_tkinter_utils.listbox_get_selected(self.w_level_listbox, self.level_folder_paths)
@@ -209,7 +235,7 @@ class MainWindow(tk.Toplevel):
         self.level_folder_paths[selected_index] = form_result
 
 
-    @update_wrapper
+    @_update_wrapper
     def remove_level_folder(self):
         """Deletes the selected level folder."""
         selected_items = l_tkinter_utils.listbox_get_selected(self.w_level_listbox, self.level_folder_paths)
@@ -239,16 +265,3 @@ class MainWindow(tk.Toplevel):
     def get_level_folders(self):
         """Gets the level folders in the list."""
         return [l_pa_cls_simple.LevelFolder.from_folder(folder_path) for folder_path in self.level_folder_paths]
-
-
-    def update_source_level(self):
-        """Updates the source level."""
-        base_level_form = self.w_advanced.w_base_level
-        current_source_level = self.w_advanced.w_current_source_level
-
-        if base_level_form.is_filled():
-            current_source_level.update_text(True, "Base Level", base_level_form.get_result())
-        elif len(self.level_folder_paths) > 0:
-            current_source_level.update_text(True, "First Level", self.level_folder_paths[0])
-        else:
-            current_source_level.update_text(False)
