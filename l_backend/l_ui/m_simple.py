@@ -45,7 +45,7 @@ class SimpleView(tk.Frame):
 
             super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
-            l_tkinter_utils.set_weights(self, x = (3, 1, 1), y = (1, 2))
+            l_tkinter_utils.set_weights(self, x = (4, 1, 1), y = (1, 2))
 
             self.w_parent = parent
 
@@ -86,7 +86,7 @@ class SimpleView(tk.Frame):
             """Contains select controls."""
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent)
-                l_tkinter_utils.place_on_grid(self, coords = (1, 2))
+                l_tkinter_utils.place_on_grid(self, coords = (2, 1))
 
 
         def update_listbox(self):
