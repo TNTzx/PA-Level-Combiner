@@ -51,8 +51,9 @@ class MainWindow(tk.Toplevel):
             self.w_advanced.w_current_source_level
         ]
 
-        self.w_simple.w_version_select.on_change = self.set_requires_version_update
+        self.w_simple.w_version_select.on_change = self._version_select_bind
         self.set_requires_version_update()
+        self.previous_selected_version = self.w_simple.w_version_select.get_result()
 
         level_select_edit_buttons = self.w_simple.w_level_select.w_edit_buttons
         level_select_edit_buttons.add = self.add_level_folder
@@ -93,7 +94,7 @@ class MainWindow(tk.Toplevel):
         def __init__(self, parent: tk.Widget):
             super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
             l_tkinter_utils.place_on_grid(self, coords = (0, 2))
-            l_tkinter_utils.set_weights(self, x = (1, 1))
+            l_tkinter_utils.set_weights(self)
 
             self.w_button = self.Button(self)
 
@@ -101,8 +102,8 @@ class MainWindow(tk.Toplevel):
             """The combine button."""
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent, text = "Combine!")
-                l_tkinter_utils.place_on_grid(self, coords = (1, 0))
-                l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.2, bold = True))
+                l_tkinter_utils.place_on_grid(self)
+                l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.5, bold = True))
 
     class MiscButtons(tk.Frame):
         """Contains all the miscellaneous buttons."""
@@ -145,6 +146,28 @@ class MainWindow(tk.Toplevel):
     def set_requires_version_update(self):
         """Updates the widgets that requires the version field to be filled."""
         self.set_active_requires_version(self.w_view_manager.w_simple.w_version_select.is_filled())
+
+    def _version_select_bind(self):
+        """Called when version select is changed."""
+        if len(self.level_folder_paths) > 0:
+            confirm = l_tkinter_utils.messagebox(
+                self,
+                title = "Version Select Change Warning",
+                description = (
+                    "Are you sure you want to change the version?\n"
+                    "Changing versions will remove all imported level folders!"
+                ),
+                options = (l_tkinter_utils.Options.confirm, l_tkinter_utils.Options.cancel)
+            )
+            if confirm == l_tkinter_utils.Options.cancel:
+                self.w_simple.w_version_select.w_option_menu.variable.set(self.previous_selected_version)
+                return
+
+            self.level_folder_paths.clear()
+            self.update_level_listbox()
+
+        self.set_requires_version_update()
+        self.previous_selected_version = self.w_simple.w_version_select.get_result()
 
 
     def update_source_level(self):

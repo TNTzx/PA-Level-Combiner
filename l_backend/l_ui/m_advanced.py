@@ -13,6 +13,7 @@ class AdvancedView(tk.Frame):
         l_tkinter_utils.set_weights(self, y = (1 for _ in range(4)))
 
         self.w_title = self.Title(self)
+        self.w_options = self.Options(self)
         self.w_base_level = self.BaseLevel(self)
         self.w_current_source_level = self.CurrentSourceLevel(self)
 
