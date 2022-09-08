@@ -13,7 +13,7 @@ import l_tkinter_utils
 import l_pa_cls_simple
 
 from .. import l_library
-from . import m_simple, m_advanced
+from . import m_simple, m_advanced, m_combine_option
 
 
 class MainWindow(tk.Toplevel):
@@ -35,6 +35,7 @@ class MainWindow(tk.Toplevel):
 
 
         self.level_folder_paths = combine_job.level_folder_paths
+        self.combine_settings = combine_job.combine_settings
 
 
         self.w_simple = self.w_view_manager.w_simple
@@ -65,6 +66,8 @@ class MainWindow(tk.Toplevel):
 
         self.w_advanced.w_base_level.on_change = self.update_source_level
         self.update_source_level()
+
+        l_tkinter_utils.button_link(self.w_advanced.w_options.w_button, self.open_combine_options)
 
     class Title(l_tkinter_utils.Title):
         """The title."""
@@ -275,3 +278,8 @@ class MainWindow(tk.Toplevel):
     def get_level_folders(self):
         """Gets the level folders in the list."""
         return [l_pa_cls_simple.LevelFolder.from_folder(folder_path) for folder_path in self.level_folder_paths]
+
+
+    def open_combine_options(self):
+        """Opens the combine options then sets the combine settings."""
+        self.combine_settings = m_combine_option.show_combine_option(self, self.combine_settings)

@@ -19,7 +19,7 @@ class CombineOptionWindow(tk.Toplevel):
             combine_settings = l_pa_cls_simple.CombineSettings()
 
         super().__init__(parent)
-        l_tkinter_utils.window_set_size(self, 900, 480)
+        l_tkinter_utils.window_set_size(self, 1000, 600)
         l_tkinter_utils.window_center_to_screen(self)
         l_tkinter_utils.set_weights(self, y = (1, 1, 1))
 
@@ -27,7 +27,13 @@ class CombineOptionWindow(tk.Toplevel):
 
         self.w_title = self.Title(self)
         self.w_combine_options = self.CombineOptions(self)
+
         self.w_confirm_cancel = self.ConfirmCancel(self)
+        l_tkinter_utils.button_link(self.w_confirm_cancel.w_confirm, self.confirm)
+        l_tkinter_utils.button_link(self.w_confirm_cancel.w_cancel, self.cancel)
+
+
+        self.is_confirmed = False
 
 
         self.include_options = self.w_combine_options.w_include.w_options.w_options
@@ -198,6 +204,17 @@ class CombineOptionWindow(tk.Toplevel):
                 l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.5))
 
 
+    def confirm(self):
+        """The confirm button bind."""
+        self.is_confirmed = True
+        self.destroy()
+
+    def cancel(self):
+        """The cancel button bind."""
+        self.is_confirmed = False
+        self.destroy()
+
+
     def get_combine_settings(self):
         """Gets the combine settings according to this form."""
         def get_value(options: list[self.CombineOptions.CombineOptionSet.Options.Option], idx: int):
@@ -228,6 +245,9 @@ class CombineOptionWindow(tk.Toplevel):
     def show(self):
         """Shows this window then returns the combine settings when done."""
         l_tkinter_utils.window_wait_active(self.w_parent, self)
+        if not self.is_confirmed:
+            return None
+
         return self.get_combine_settings()
 
 
@@ -239,4 +259,9 @@ def show_combine_option(parent: tk.Widget, original_combine_settings: l_pa_cls_s
     new_combine_settings = copy.deepcopy(original_combine_settings)
 
     w_combine_option = CombineOptionWindow(parent, new_combine_settings)
-    return w_combine_option.show()
+    result = w_combine_option.show()
+
+    if result is None:
+        return original_combine_settings
+
+    return result
