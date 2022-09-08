@@ -50,10 +50,7 @@ class SimpleView(tk.Frame):
             self.w_level_list = self.LevelList(self)
 
             self.w_edit_buttons = self.EditButtons(self)
-
             self.w_select_buttons = self.SelectButtons(self)
-            self.w_select_buttons.sel_all = lambda: self.set_select_all(True)
-            self.w_select_buttons.sel_none = lambda: self.set_select_all(False)
 
         class Title(l_tkinter_utils.Title):
             """The level select title."""

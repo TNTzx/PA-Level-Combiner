@@ -48,8 +48,17 @@ class MainWindow(tk.Toplevel):
             self.w_advanced.w_current_source_level
         ]
 
-        self.w_view_manager.w_simple.w_version_select.on_change = self.set_requires_version_update
+        self.w_simple.w_version_select.on_change = self.set_requires_version_update
         self.set_requires_version_update()
+
+        level_select_edit_buttons = self.w_simple.w_level_select.w_edit_buttons
+        level_select_edit_buttons.add = self.add_level_folder
+        level_select_edit_buttons.edit = self.edit_level_folder
+        level_select_edit_buttons.remove = self.remove_level_folder
+
+        level_select_sel_buttons = self.w_simple.w_level_select.w_select_buttons
+        level_select_sel_buttons.sel_all = lambda: self.set_select_all(True)
+        level_select_sel_buttons.sel_none = lambda: self.set_select_all(False)
 
 
         self.level_folder_paths = combine_job.level_folder_paths
