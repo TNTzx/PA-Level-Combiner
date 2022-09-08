@@ -48,3 +48,17 @@ class AdvancedView(tk.Frame):
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent)
                 l_tkinter_utils.place_on_grid(self)
+                l_tkinter_utils.set_font(self)
+                l_tkinter_utils.add_wrapping(self)
+
+
+        def update_text(self, available: bool, source: str = "", folder_path: str = ""):
+            """Updates the text."""
+            if available:
+                final_str = (
+                    f"Current Source Level: {source}\n"
+                    f"{folder_path}"
+                )
+            else:
+                final_str = "Current Source Level: Not found!"
+            l_tkinter_utils.update_text(self.w_label, final_str)
