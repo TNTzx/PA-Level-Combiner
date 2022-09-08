@@ -10,7 +10,7 @@ class AdvancedView(tk.Frame):
     def __init__(self, parent: tk.Widget):
         super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
         l_tkinter_utils.place_on_grid(self)
-        l_tkinter_utils.set_weights(self, y = (1 for _ in range(3)))
+        l_tkinter_utils.set_weights(self, y = (1 for _ in range(4)))
 
         self.w_title = self.Title(self)
         self.w_base_level = self.BaseLevel(self)
@@ -27,18 +27,24 @@ class AdvancedView(tk.Frame):
             )
             l_tkinter_utils.place_on_grid(self)
 
+    class Options(tk.Button):
+        """Contains all combine options."""
+        def __init__(self, parent: tk.Widget):
+            super().__init__(parent, text = "Combining Options...")
+            l_tkinter_utils.place_on_grid(self, coords = (0, 1))
+            l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.2))
+
     class BaseLevel(l_tkinter_utils.EntryBrowseForm):
         """Base level entry."""
         def __init__(self, parent: tk.Widget):
             super().__init__(parent, label_text = "Base level", label_size_mult = 1.2, initial = "<No Base Level>")
-            l_tkinter_utils.place_on_grid(self, coords = (0, 1))
-
+            l_tkinter_utils.place_on_grid(self, coords = (0, 2))
 
     class CurrentSourceLevel(tk.Frame):
         """Shows the current source level."""
         def __init__(self, parent: tk.Widget):
             super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
-            l_tkinter_utils.place_on_grid(self, coords = (0, 2))
+            l_tkinter_utils.place_on_grid(self, coords = (0, 3))
             l_tkinter_utils.set_weights(self)
 
             self.w_label = self.Label(self)

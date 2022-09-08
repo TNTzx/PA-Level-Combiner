@@ -30,7 +30,7 @@ class MainWindow(tk.Toplevel):
 
         self.w_title = self.Title(self)
         self.w_view_manager = self.ViewManager(self)
-        self.w_combine_controls = self.CombineControls(self)
+        self.w_combine_controls = self.CombineButton(self)
         self.w_misc_buttons = self.MiscButtons(self)
 
 
@@ -88,22 +88,14 @@ class MainWindow(tk.Toplevel):
             ]
             l_tkinter_utils.notebook_add_frames(self, frames)
 
-    class CombineControls(tk.Frame):
+    class CombineButton(tk.Frame):
         """Contains the combining controls."""
         def __init__(self, parent: tk.Widget):
             super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
             l_tkinter_utils.place_on_grid(self, coords = (0, 2))
             l_tkinter_utils.set_weights(self, x = (1, 1))
 
-            self.w_options = self.Options(self)
             self.w_button = self.Button(self)
-
-        class Options(tk.Button):
-            """Contains all combine options."""
-            def __init__(self, parent: tk.Widget):
-                super().__init__(parent, text = "Combining Options...")
-                l_tkinter_utils.place_on_grid(self)
-                l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.2))
 
         class Button(tk.Button):
             """The combine button."""
