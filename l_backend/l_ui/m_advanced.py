@@ -33,6 +33,7 @@ class AdvancedView(tk.Frame):
             super().__init__(parent, label_text = "Base level", label_size_mult = 1.2, initial = "<No Base Level>")
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
 
+
     class CurrentSourceLevel(tk.Frame):
         """Shows the current source level."""
         def __init__(self, parent: tk.Widget):
