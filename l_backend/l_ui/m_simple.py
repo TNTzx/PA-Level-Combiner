@@ -158,7 +158,7 @@ class SimpleView(tk.Frame):
                 options = (l_tkinter_utils.Options.yes, l_tkinter_utils.Options.no)
             )
 
-            if confirm == l_tkinter_utils.Options.no:
+            if confirm == l_tkinter_utils.Options.no or confirm is None:
                 return
 
             for selected_item_idx in l_tkinter_utils.listbox_get_selected_idx(self.w_level_list.w_listbox):
