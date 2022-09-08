@@ -30,7 +30,7 @@ class CombineOptionWindow(tk.Toplevel):
 
         self.w_confirm_cancel = self.ConfirmCancel(self)
         l_tkinter_utils.button_link(self.w_confirm_cancel.w_confirm, self.confirm)
-        l_tkinter_utils.button_link(self.w_confirm_cancel.w_cancel, self.cancel)
+        l_tkinter_utils.button_link(self.w_confirm_cancel.w_disregard, self.disregard)
 
 
         self.is_confirmed = False
@@ -157,7 +157,8 @@ class CombineOptionWindow(tk.Toplevel):
                     label_title = "Include:",
                     label_desc = (
                         "If on, it will be taken from all levels and added to the combined level.\n"
-                        "If off, it won't be included in the combined level."
+                        "If off, it won't be included in the combined level.\n"
+                        "Note that the base level will always keep these no matter if it's off or on."
                     )
                 )
                 l_tkinter_utils.place_on_grid(self)
@@ -187,19 +188,19 @@ class CombineOptionWindow(tk.Toplevel):
             l_tkinter_utils.set_weights(self, x = (1, 1))
 
             self.w_confirm = self.Confirm(self)
-            self.w_cancel = self.Cancel(self)
+            self.w_disregard = self.DisregardChanges(self)
 
         class Confirm(tk.Button):
             """The confirm button."""
             def __init__(self, parent: tk.Widget):
-                super().__init__(parent, text = "Confirm")
+                super().__init__(parent, text = "Confirm Changes")
                 l_tkinter_utils.place_on_grid(self)
                 l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.5, bold = True))
 
-        class Cancel(tk.Button):
-            """The cancel button."""
+        class DisregardChanges(tk.Button):
+            """The disregard changes button."""
             def __init__(self, parent: tk.Widget):
-                super().__init__(parent, text = "Cancel")
+                super().__init__(parent, text = "Disregard Changes")
                 l_tkinter_utils.place_on_grid(self, coords = (1, 0))
                 l_tkinter_utils.set_font(self, font = l_tkinter_utils.make_font(size_mult = 1.5))
 
@@ -209,7 +210,7 @@ class CombineOptionWindow(tk.Toplevel):
         self.is_confirmed = True
         self.destroy()
 
-    def cancel(self):
+    def disregard(self):
         """The cancel button bind."""
         self.is_confirmed = False
         self.destroy()
