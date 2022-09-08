@@ -22,7 +22,7 @@ class MainWindow(tk.Toplevel):
         l_tkinter_utils.window_center_to_screen(self)
 
         self.w_title = self.Title(self)
-        self.w_view_manager = self.ViewManager(self)
+        self.w_view_manager = self.ViewManager(self, self)
         self.w_combine_controls = self.CombineControls(self)
         self.w_misc_buttons = self.MiscButtons(self)
 
@@ -52,12 +52,14 @@ class MainWindow(tk.Toplevel):
 
     class ViewManager(ttk.Notebook):
         """The view manager."""
-        def __init__(self, parent: tk.Widget):
+        def __init__(self, parent: tk.Widget, main_window: tk.Toplevel):
             super().__init__(parent)
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
             l_tkinter_utils.notebook_set_style(self)
 
-            self.w_simple = m_simple.SimpleView(self)
+            self.w_main_window = main_window
+
+            self.w_simple = m_simple.SimpleView(self, main_window)
             self.w_advanced = m_advanced.AdvancedView(self)
 
             frames = [

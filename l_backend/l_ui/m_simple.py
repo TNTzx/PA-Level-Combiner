@@ -14,14 +14,16 @@ import l_pa_cls_simple
 
 class SimpleView(tk.Frame):
     """The simple view."""
-    def __init__(self, parent: tk.Widget):
+    def __init__(self, parent: tk.Widget, main_window: tk.Toplevel):
         super().__init__(parent, **l_tkinter_utils.FRAME_BORDER)
         l_tkinter_utils.place_on_grid(self)
         l_tkinter_utils.set_weights(self, y = (1 for _ in range(5)))
 
-        self.w_level_select = self.LevelSelect(self)
-        self.w_output = self.Output(self)
+        self.w_main_window = main_window
+
         self.w_version_select = self.VersionSelect(self)
+        self.w_level_select = self.LevelSelect(self, main_window)
+        self.w_output = self.Output(self)
 
     class VersionSelect(l_tkinter_utils.OptionMenuForm):
         """The version select dropdown."""
@@ -39,7 +41,7 @@ class SimpleView(tk.Frame):
 
     class LevelSelect(tk.Frame):
         """The level select."""
-        def __init__(self, parent: tk.Widget, level_folder_paths: list[str] = None):
+        def __init__(self, parent: tk.Widget, main_window: tk.Toplevel, level_folder_paths: list[str] = None):
             if level_folder_paths is None:
                 level_folder_paths = []
 
@@ -48,6 +50,7 @@ class SimpleView(tk.Frame):
             l_tkinter_utils.set_weights(self, x = (4, 1, 1), y = (1, 2))
 
             self.w_parent = parent
+            self.w_main_window = main_window
 
             self.w_title = self.Title(self)
             self.w_level_list = self.LevelList(self)
@@ -117,7 +120,7 @@ class SimpleView(tk.Frame):
             """Edits a level folder."""
             selected = l_tkinter_utils.listbox_get_selected(self.w_level_list.w_listbox, self._level_folder_paths)
             if len(selected) != 1:
-                l_tkinter_utils.error_messagebox(self.w_parent, "You must select one and only one item to edit.")
+                l_tkinter_utils.error_messagebox(self.w_main_window, "You must select one and only one item to edit.")
                 return
             selected: str = selected[0]
 
@@ -134,7 +137,7 @@ class SimpleView(tk.Frame):
                 def browse(self) -> str:
                     return tkfd.askdirectory(title = "Choose a level folder.")
 
-            form_result = l_tkinter_utils.form_messagebox(self.w_parent, EntryBrowseForm)
+            form_result = l_tkinter_utils.form_messagebox(self.w_main_window, EntryBrowseForm)
 
             if form_result is None:
                 return
@@ -148,11 +151,11 @@ class SimpleView(tk.Frame):
             """Deletes the selected level folder."""
             selected_items = l_tkinter_utils.listbox_get_selected(self.w_level_list.w_listbox, self._level_folder_paths)
             if len(selected_items) == 0:
-                l_tkinter_utils.error_messagebox(self.w_parent, "You must select at least one item to delete.")
+                l_tkinter_utils.error_messagebox(self.w_main_window, "You must select at least one item to delete.")
                 return
 
             confirm = l_tkinter_utils.messagebox(
-                self.w_parent,
+                self.w_main_window,
                 title = "Deleting Level Folders",
                 description = "Are you sure you want to delete these level folders?\n" + "\n".join(selected_items),
                 options = (l_tkinter_utils.Options.yes, l_tkinter_utils.Options.no)
