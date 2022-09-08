@@ -20,6 +20,7 @@ class MainWindow(tk.Toplevel):
         l_tkinter_utils.set_weights(self, y = (1 for _ in range(4)))
         l_tkinter_utils.window_set_size(self, 1280, 720)
         l_tkinter_utils.window_center_to_screen(self)
+        l_tkinter_utils.window_set_title(self, "PA Level Combiner")
 
         self.w_title = self.Title(self)
         self.w_view_manager = self.ViewManager(self, self)
