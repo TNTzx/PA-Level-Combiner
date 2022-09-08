@@ -81,3 +81,6 @@ class SimpleView(tk.Frame):
         def __init__(self, parent: tk.Widget):
             super().__init__(parent, label_text = "Output Level Folder", label_size_mult = 1.5)
             l_tkinter_utils.place_on_grid(self, coords = (0, 2))
+
+        def browse(self) -> str:
+            return tkfd.askdirectory()

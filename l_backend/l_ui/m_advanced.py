@@ -2,6 +2,7 @@
 
 
 import tkinter as tk
+import tkinter.filedialog as tkfd
 import l_tkinter_utils
 
 
@@ -49,6 +50,9 @@ class AdvancedView(tk.Frame):
         def __init__(self, parent: tk.Widget):
             super().__init__(parent, label_text = "Base level", label_size_mult = 1.2, initial = "<No Base Level>")
             l_tkinter_utils.place_on_grid(self, coords = (0, 2))
+
+        def browse(self) -> str:
+            return tkfd.askdirectory()
 
     class CurrentSourceLevel(tk.Frame):
         """Shows the current source level."""
