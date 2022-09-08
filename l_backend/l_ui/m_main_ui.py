@@ -34,6 +34,9 @@ class MainWindow(tk.Toplevel):
         self.w_misc_buttons = self.MiscButtons(self)
 
 
+        self.level_folder_paths = combine_job.level_folder_paths
+
+
         self.w_simple = self.w_view_manager.w_simple
         self.w_level_listbox = self.w_simple.w_level_select.w_level_list.w_listbox
 
@@ -60,11 +63,8 @@ class MainWindow(tk.Toplevel):
         level_select_sel_buttons.sel_all = lambda: self.set_select_all(True)
         level_select_sel_buttons.sel_none = lambda: self.set_select_all(False)
 
-        base_level_form = self.w_advanced.w_base_level
-        base_level_form.on_change = self._update_source_level_wrapper(base_level_form.on_change)
-
-
-        self.level_folder_paths = combine_job.level_folder_paths
+        self.w_advanced.w_base_level.on_change = self.update_source_level
+        self.update_source_level()
 
     class Title(l_tkinter_utils.Title):
         """The title."""
@@ -167,23 +167,14 @@ class MainWindow(tk.Toplevel):
         else:
             current_source_level.update_text(False)
 
-    @staticmethod
-    def _update_source_level_wrapper(func: typ.Callable):
-        """Update source level wrapper."""
-        def wrapper(self: MainWindow):
-            func(self)
-            self.update_source_level()
 
-        return wrapper
-
-
-    @_update_source_level_wrapper
     def update_level_listbox(self):
         """Updates the listbox with the level folder paths."""
         l_tkinter_utils.listbox_update(
             self.w_level_listbox,
             self.level_folder_paths
         )
+        self.update_source_level()
 
     @staticmethod
     def _update_wrapper(func: typ.Callable):
