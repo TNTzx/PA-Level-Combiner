@@ -283,3 +283,12 @@ class MainWindow(tk.Toplevel):
     def open_combine_options(self):
         """Opens the combine options then sets the combine settings."""
         self.combine_settings = m_combine_option.show_combine_option(self, self.combine_settings)
+
+
+    def get_combine_job(self):
+        """Gets the combine job."""
+        # TODO
+
+    def run_job(self):
+        """Runs the combine job."""
+        # TODO
