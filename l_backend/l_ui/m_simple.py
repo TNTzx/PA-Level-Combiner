@@ -137,7 +137,7 @@ class SimpleView(tk.Frame):
                 def browse(self) -> str:
                     return tkfd.askdirectory(title = "Choose a level folder.")
 
-            form_result = l_tkinter_utils.form_messagebox(self.w_main_window, EntryBrowseForm)
+            form_result = l_tkinter_utils.form_messagebox(self.w_main_window, EntryBrowseForm, "Edit Level Folder Path")
 
             if form_result is None:
                 return
