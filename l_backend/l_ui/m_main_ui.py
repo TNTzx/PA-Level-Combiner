@@ -2,6 +2,7 @@
 
 
 from __future__ import annotations
+from ensurepip import version
 
 import typing as typ
 
@@ -43,6 +44,12 @@ class MainWindow(tk.Toplevel):
 
         self.w_advanced = self.w_view_manager.w_advanced
 
+
+        self.w_simple.w_version_select.w_option_menu.variable.set(
+            combine_job.version.get_description()
+            if combine_job.version is not None else
+            self.w_simple.w_version_select.initial
+        )
 
         self.w_requires_version = [
             self.w_simple.w_level_select,
@@ -275,14 +282,27 @@ class MainWindow(tk.Toplevel):
         l_tkinter_utils.listbox_set_select_all(self.w_level_listbox, select_all)
 
 
-    def get_level_folders(self):
-        """Gets the level folders in the list."""
-        return [l_pa_cls_simple.LevelFolder.from_folder(folder_path) for folder_path in self.level_folder_paths]
-
-
     def open_combine_options(self):
         """Opens the combine options then sets the combine settings."""
         self.combine_settings = m_combine_option.show_combine_option(self, self.combine_settings)
+
+
+    def get_version(self):
+        """Gets the selected version."""
+        version_widget = self.w_simple.w_version_select
+        if version_widget.is_filled():
+            return l_pa_cls_simple.PAVersion.get_version_from_description(version_widget.get_result())
+
+        return None
+
+
+    def get_level_folders(self):
+        """Gets the level folders in the list."""
+        version = self.get_version()
+        return [version.import_level_folder(folder_path) for folder_path in self.level_folder_paths]
+
+
+
 
 
     def get_combine_job(self):
