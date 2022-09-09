@@ -295,14 +295,28 @@ class MainWindow(tk.Toplevel):
 
         return None
 
-
     def get_level_folders(self):
         """Gets the level folders in the list."""
         version = self.get_version()
-        return [version.import_level_folder(folder_path) for folder_path in self.level_folder_paths]
+        first_level_folder = version.import_level_folder(self.level_folder_paths[0])
+        rest_level_folders = [
+            version.import_level_folder(folder_path, load_audio = False)
+            for folder_path in self.level_folder_paths[1:]
+        ]
+        return [first_level_folder] + rest_level_folders
 
+    def get_base_level_folder(self):
+        """Gets the base level."""
+        return self.get_version().import_level_folder(
+            self.w_advanced.w_base_level.get_result()
+        )
 
-
+    def get_output_path(self):
+        """Gets the output path."""
+        path = self.w_simple.w_output.get_result()
+        if not l_pa_cls_simple.path_exists(path):
+            raise l_pa_cls_simple.FolderNotFound(path)
+        return path
 
 
     def get_combine_job(self):
