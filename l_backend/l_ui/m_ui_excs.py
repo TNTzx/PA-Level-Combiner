@@ -21,7 +21,7 @@ class NoLevelFolders(UIException):
 class NoOutputPath(UIException):
     """There's no output path'."""
     def __init__(self):
-        super().__init__("There's no specified output path.")
+        super().__init__("There's no specified output level folder.")
 
 
 class GetCombineJobException(UIException):
