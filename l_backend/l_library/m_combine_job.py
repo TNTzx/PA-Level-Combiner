@@ -33,3 +33,9 @@ class CombineJob(l_pa_cls_simple.PAObject):
         )
 
         self.version.export_level_folder(combined, self.output_folder_path)
+
+
+    def make_output_folder(self):
+        """Makes the output folder if it doesn't exist."""
+        if not l_pa_cls_simple.path_exists(self.output_folder_path):
+            l_pa_cls_simple.make_folder_path(self.output_folder_path)
