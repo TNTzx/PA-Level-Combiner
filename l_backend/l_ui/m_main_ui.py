@@ -299,17 +299,19 @@ class MainWindow(tk.Toplevel):
     def get_level_folders(self):
         """Gets the level folders in the list."""
         version = self.get_version()
-        first_level_folder = version.import_level_folder(self.level_folder_paths[0])
-        rest_level_folders = [
-            version.import_level_folder(folder_path, load_audio = False)
-            for folder_path in self.level_folder_paths[1:]
-        ]
-
-        level_folders = [first_level_folder] + rest_level_folders
-        if len(level_folders) == 0:
+        if len(self.level_folder_paths) == 0:
             raise m_ui_excs.NoLevelFolders()
 
-        return level_folders
+        first_level_folder = version.import_level_folder(self.level_folder_paths[0])
+        if len(self.level_folder_paths) > 1:
+            rest_level_folders = [
+                version.import_level_folder(folder_path, load_audio = False)
+                for folder_path in self.level_folder_paths[1:]
+            ]
+        else:
+            rest_level_folders = []
+
+        return [first_level_folder] + rest_level_folders
 
     def get_base_level_folder(self):
         """Gets the base level."""
@@ -326,15 +328,22 @@ class MainWindow(tk.Toplevel):
 
     def get_combine_job(self):
         """Gets the combine job."""
+        def raise_not_selected_version(not_selected_exc: m_ui_excs.VersionNotSelected):
+            """Raises an exception when the version is not selected."""
+            if isinstance(not_selected_exc, m_ui_excs.VersionNotSelected): # TEST
+                raise m_ui_excs.GetCombineJobException(str(not_selected_exc)) from not_selected_exc
+
         try:
             version = self.get_version()
+        except m_ui_excs.VersionNotSelected as exc:
+            raise_not_selected_version(exc)
         except l_pa_cls_simple.VersionNotFound as exc:
             raise m_ui_excs.GetCombineJobException(f"Version {exc.missing_version_number} is not supported!") from exc
 
 
         import_excs = (l_pa_cls_simple.FolderNotFound, l_pa_cls_simple.LevelFileNotFound, l_pa_cls_simple.IncompatibleVersionImport)
 
-        def raise_import_exc(import_exc: l_pa_cls_simple.ImportException, level_folder_type: str):
+        def raise_import_exc(import_exc: l_pa_cls_simple.ImportException | m_ui_excs.UIException, level_folder_type: str):
             """Raises a `GetCombineJobException` based on the import exception."""
             if isinstance(import_exc, l_pa_cls_simple.FolderNotFound): # TEST
                 raise m_ui_excs.GetCombineJobException(
@@ -352,7 +361,7 @@ class MainWindow(tk.Toplevel):
                     )
                 ) from import_exc
             if isinstance(import_exc, m_ui_excs.VersionNotSelected): # TEST
-                raise m_ui_excs.GetCombineJobException(str(import_exc)) from import_exc
+                raise_not_selected_version(import_exc)
 
         try:
             level_folders = self.get_level_folders()
