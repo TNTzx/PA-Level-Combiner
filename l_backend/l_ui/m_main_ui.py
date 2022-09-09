@@ -2,7 +2,6 @@
 
 
 from __future__ import annotations
-from ensurepip import version
 
 import typing as typ
 
@@ -14,7 +13,7 @@ import l_tkinter_utils
 import l_pa_cls_simple
 
 from .. import l_library
-from . import m_simple, m_advanced, m_combine_option
+from . import m_simple, m_advanced, m_combine_option, m_ui_excs
 
 
 class MainWindow(tk.Toplevel):
@@ -321,7 +320,10 @@ class MainWindow(tk.Toplevel):
 
     def get_combine_job(self):
         """Gets the combine job."""
-        # TODO
+        try:
+            version = self.get_version()
+        except l_pa_cls_simple.VersionNotFound:
+            raise 
 
     def run_job(self):
         """Runs the combine job."""
