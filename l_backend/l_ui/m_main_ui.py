@@ -43,7 +43,8 @@ class MainWindow(tk.Toplevel):
         self.level_folder_paths = [
             str(level_folder) for level_folder in combine_job.level_folders
         ] + [
-            "D:/Xander Files/[1] cluster/[1] self/[4] programming/[1] tools/pa level combiner/v2/test environment/combining/base/pacm combine level 1"
+            "D:/Xander Files/[1] cluster/[1] self/[4] programming/[1] tools/pa level combiner/v2/test environment/combining/base/pacm combine level 1",
+            "D:/Xander Files/[1] cluster/[1] self/[4] programming/[1] tools/pa level combiner/v2/test environment/combining/base/pacm combine level 2"
         ]
         l_tkinter_utils.listbox_update(self.w_simple.w_level_select.w_level_list.w_listbox, self.level_folder_paths)
         self.combine_settings = combine_job.combine_settings
