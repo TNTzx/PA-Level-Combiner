@@ -20,7 +20,7 @@ class MainWindow(tk.Toplevel):
     """The main window."""
     def __init__(self, parent: tk.Widget, combine_job: l_library.CombineJob = None):
         if combine_job is None:
-            combine_job = l_library.CombineJob()
+            combine_job = l_library.CombineJob(version = l_pa_cls_simple.v20_4_4, output_folder_path = "D:/Xander Files/[1] cluster/[1] self/[4] programming/[1] tools/pa level combiner/v2/test environment/combining/output/test")
 
         super().__init__(parent)
         l_tkinter_utils.set_weights(self, y = (1 for _ in range(4)))
@@ -34,14 +34,19 @@ class MainWindow(tk.Toplevel):
         self.w_misc_buttons = self.MiscButtons(self)
 
 
-        self.level_folder_paths = combine_job.level_folders
-        self.combine_settings = combine_job.combine_settings
-
-
         self.w_simple = self.w_view_manager.w_simple
         self.w_level_listbox = self.w_simple.w_level_select.w_level_list.w_listbox
 
         self.w_advanced = self.w_view_manager.w_advanced
+
+
+        self.level_folder_paths = [
+            str(level_folder) for level_folder in combine_job.level_folders
+        ] + [
+            "D:/Xander Files/[1] cluster/[1] self/[4] programming/[1] tools/pa level combiner/v2/test environment/combining/base/pacm combine level 1"
+        ]
+        l_tkinter_utils.listbox_update(self.w_simple.w_level_select.w_level_list.w_listbox, self.level_folder_paths)
+        self.combine_settings = combine_job.combine_settings
 
 
         self.w_simple.w_version_select.w_option_menu.variable.set(
@@ -49,6 +54,10 @@ class MainWindow(tk.Toplevel):
             if combine_job.version is not None else
             self.w_simple.w_version_select.initial
         )
+
+
+        self.w_simple.w_output.w_browse.w_entry.variable.set(combine_job.output_folder_path)
+
 
         self.w_requires_version = [
             self.w_simple.w_level_select,
@@ -406,6 +415,14 @@ class MainWindow(tk.Toplevel):
             return
 
 
+        try:
+            combine_job = self.get_combine_job()
+        except m_ui_excs.GetCombineJobException as exc:
+            l_tkinter_utils.error_messagebox(self, str(exc))
+            self.set_requires_version_update()
+            return
+
+
         class JobProgress(l_tkinter_utils.ProgressbarPopup):
             """The progress bar."""
             def __init__(self, parent: tk.Widget):
@@ -439,15 +456,6 @@ class MainWindow(tk.Toplevel):
             """Runs the job."""
             l_tkinter_utils.window_set_visibility(job_progress, True)
             l_tkinter_utils.set_active(self, False)
-
-            job_progress.set_description("Getting job...")
-
-            try:
-                combine_job = self.get_combine_job()
-            except m_ui_excs.GetCombineJobException as exc:
-                l_tkinter_utils.error_messagebox(self, str(exc))
-                self.set_requires_version_update()
-                return
 
             job_progress.set_description("Combining and writing to output path...")
 

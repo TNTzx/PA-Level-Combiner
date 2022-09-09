@@ -1,6 +1,8 @@
 """Main function."""
 
 
+import functools as fc
+
 import l_backend
 import l_tkinter_utils
 
