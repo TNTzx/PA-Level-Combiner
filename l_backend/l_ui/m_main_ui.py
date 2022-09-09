@@ -376,7 +376,7 @@ class MainWindow(tk.Toplevel):
 
         try:
             base_level_folder = self.get_base_level_folder()
-        except import_excs as exc: # TEST
+        except import_excs as exc:
             raise_import_exc(exc, "base level folder")
 
         try:
