@@ -347,16 +347,16 @@ class MainWindow(tk.Toplevel):
             """Raises a `GetCombineJobException` based on the import exception."""
             if isinstance(import_exc, l_pa_cls_simple.FolderNotFound): # TEST
                 raise m_ui_excs.GetCombineJobException(
-                    f"The {level_folder_type} {import_exc.not_found_folder} can't be found!"
+                    f"The {level_folder_type} \"{import_exc.not_found_folder}\" can't be found!"
                 ) from import_exc
             if isinstance(import_exc, l_pa_cls_simple.LevelFileNotFound): # TEST
                 raise m_ui_excs.GetCombineJobException(
-                    f"The {level_folder_type} {import_exc.level_folder_path} doesn't have the {import_exc.missing_file} file!"
+                    f"The {level_folder_type} \"{import_exc.level_folder_path}\" doesn't have the {import_exc.missing_file} file!"
                 ) from import_exc
             if isinstance(import_exc, l_pa_cls_simple.IncompatibleVersionImport): # TEST
                 raise m_ui_excs.GetCombineJobException(
                     (
-                        f"The {level_folder_type} {import_exc.level_folder_path} with version {import_exc.importing_version_num} "
+                        f"The {level_folder_type} \"{import_exc.level_folder_path}\" with version {import_exc.importing_version_num} "
                         f"is not compatible with the currently selected version ({import_exc.current_version_num})."
                     )
                 ) from import_exc
