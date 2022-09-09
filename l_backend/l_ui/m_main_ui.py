@@ -415,8 +415,6 @@ class MainWindow(tk.Toplevel):
 
             class TitledProgressbar(l_tkinter_utils.TitledProgressbar):
                 """The titled progressbar."""
-                def __init__(self, parent: tk.Widget):
-                    super().__init__(parent)
 
                 class Title(l_tkinter_utils.Title):
                     """The title widget."""
