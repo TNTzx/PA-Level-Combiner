@@ -427,7 +427,7 @@ class MainWindow(tk.Toplevel):
             """The progress bar."""
             def __init__(self, parent: tk.Widget):
                 super().__init__(parent)
-                l_tkinter_utils.window_set_size(self, 720, 480)
+                l_tkinter_utils.window_set_size(self, 720, 200)
                 l_tkinter_utils.window_center_to_screen(self)
 
             class TitledProgressbar(l_tkinter_utils.TitledProgressbar):
@@ -442,15 +442,17 @@ class MainWindow(tk.Toplevel):
                     """The progressbar."""
                     def __init__(self, parent: tk.Widget):
                         super().__init__(parent, orient = tk.HORIZONTAL, mode = "indeterminate")
+                        l_tkinter_utils.progress_move(self)
 
 
             def set_description(self, desc: str):
                 """Sets the description."""
                 self.w_titled_progressbar.w_title.set_description(desc)
+                self.update()
 
 
         job_progress = JobProgress(self)
-        l_tkinter_utils.window_set_visibility(job_progress, False)
+        # l_tkinter_utils.window_set_visibility(job_progress, False)
 
         def run_job():
             """Runs the job."""
@@ -478,7 +480,7 @@ class MainWindow(tk.Toplevel):
             l_tkinter_utils.set_active(self, True)
 
             if finish_choose == open_level_folder:
-                l_pa_cls_simple.open_file_in_explorer(self.get_combine_job().output_folder_path)
+                l_pa_cls_simple.open_folder_in_explorer(self.get_combine_job().output_folder_path)
 
 
-        l_tkinter_utils.run_progress_func(run_job)
+        l_tkinter_utils.progress_run_func(run_job)
