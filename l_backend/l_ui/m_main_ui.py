@@ -34,7 +34,7 @@ class MainWindow(tk.Toplevel):
         self.w_misc_buttons = self.MiscButtons(self)
 
 
-        self.level_folder_paths = combine_job.level_folder_paths
+        self.level_folder_paths = combine_job.level_folders
         self.combine_settings = combine_job.combine_settings
 
 
@@ -74,6 +74,8 @@ class MainWindow(tk.Toplevel):
         self.update_source_level()
 
         l_tkinter_utils.button_link(self.w_advanced.w_options.w_button, self.open_combine_options)
+
+        l_tkinter_utils.button_link(self.w_combine_controls.w_button, self.run_combine_job)
 
     class Title(l_tkinter_utils.Title):
         """The title."""
@@ -289,10 +291,10 @@ class MainWindow(tk.Toplevel):
     def get_version(self):
         """Gets the selected version."""
         version_widget = self.w_simple.w_version_select
-        if version_widget.is_filled():
-            return l_pa_cls_simple.PAVersion.get_version_from_description(version_widget.get_result())
+        if not version_widget.is_filled():
+            raise m_ui_excs.VersionNotSelected()
 
-        return None
+        return l_pa_cls_simple.PAVersion.get_version_from_description(version_widget.get_result())
 
     def get_level_folders(self):
         """Gets the level folders in the list."""
@@ -337,18 +339,20 @@ class MainWindow(tk.Toplevel):
             if isinstance(import_exc, l_pa_cls_simple.FolderNotFound): # TEST
                 raise m_ui_excs.GetCombineJobException(
                     f"The {level_folder_type} {import_exc.not_found_folder} can't be found!"
-                ) from exc
+                ) from import_exc
             if isinstance(import_exc, l_pa_cls_simple.LevelFileNotFound): # TEST
                 raise m_ui_excs.GetCombineJobException(
-                    f"The {level_folder_type} {exc.level_folder_path} doesn't have the {exc.missing_file} file!"
-                ) from exc
+                    f"The {level_folder_type} {import_exc.level_folder_path} doesn't have the {import_exc.missing_file} file!"
+                ) from import_exc
             if isinstance(import_exc, l_pa_cls_simple.IncompatibleVersionImport): # TEST
                 raise m_ui_excs.GetCombineJobException(
                     (
-                        f"The {level_folder_type} {exc.level_folder_path} with version {exc.importing_version_num} "
-                        f"is not compatible with the currently selected version ({exc.current_version_num})."
+                        f"The {level_folder_type} {import_exc.level_folder_path} with version {import_exc.importing_version_num} "
+                        f"is not compatible with the currently selected version ({import_exc.current_version_num})."
                     )
-                ) from exc
+                ) from import_exc
+            if isinstance(import_exc, m_ui_excs.VersionNotSelected): # TEST
+                raise m_ui_excs.GetCombineJobException(str(import_exc)) from import_exc
 
         try:
             level_folders = self.get_level_folders()
