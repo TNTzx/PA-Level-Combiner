@@ -377,5 +377,11 @@ class MainWindow(tk.Toplevel):
 
     def run_combine_job(self):
         """Runs the combine job."""
-        # TODO
         # TODO remember to make the output path if it doesn't exist
+        try:
+            combine_job = self.get_combine_job()
+        except m_ui_excs.GetCombineJobException as exc:
+            l_tkinter_utils.error_messagebox(self, str(exc))
+            return
+
+        print("tada")
