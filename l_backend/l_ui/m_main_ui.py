@@ -330,7 +330,7 @@ class MainWindow(tk.Toplevel):
         """Gets the combine job."""
         def raise_not_selected_version(not_selected_exc: m_ui_excs.VersionNotSelected):
             """Raises an exception when the version is not selected."""
-            if isinstance(not_selected_exc, m_ui_excs.VersionNotSelected): # TEST
+            if isinstance(not_selected_exc, m_ui_excs.VersionNotSelected):
                 raise m_ui_excs.GetCombineJobException(str(not_selected_exc)) from not_selected_exc
 
         try:
@@ -345,22 +345,22 @@ class MainWindow(tk.Toplevel):
 
         def raise_import_exc(import_exc: l_pa_cls_simple.ImportException | m_ui_excs.UIException, level_folder_type: str):
             """Raises a `GetCombineJobException` based on the import exception."""
-            if isinstance(import_exc, l_pa_cls_simple.FolderNotFound): # TEST
+            if isinstance(import_exc, l_pa_cls_simple.FolderNotFound):
                 raise m_ui_excs.GetCombineJobException(
                     f"The {level_folder_type} \"{import_exc.not_found_folder}\" can't be found!"
                 ) from import_exc
-            if isinstance(import_exc, l_pa_cls_simple.LevelFileNotFound): # TEST
+            if isinstance(import_exc, l_pa_cls_simple.LevelFileNotFound):
                 raise m_ui_excs.GetCombineJobException(
                     f"The {level_folder_type} \"{import_exc.level_folder_path}\" doesn't have the {import_exc.missing_file} file!"
                 ) from import_exc
-            if isinstance(import_exc, l_pa_cls_simple.IncompatibleVersionImport): # TEST
+            if isinstance(import_exc, l_pa_cls_simple.IncompatibleVersionImport):
                 raise m_ui_excs.GetCombineJobException(
                     (
                         f"The {level_folder_type} \"{import_exc.level_folder_path}\" with version {import_exc.importing_version_num} "
                         f"is not compatible with the currently selected version ({import_exc.current_version_num})."
                     )
                 ) from import_exc
-            if isinstance(import_exc, m_ui_excs.VersionNotSelected): # TEST
+            if isinstance(import_exc, m_ui_excs.VersionNotSelected):
                 raise_not_selected_version(import_exc)
 
         try:
