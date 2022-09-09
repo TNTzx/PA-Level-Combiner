@@ -395,6 +395,7 @@ class MainWindow(tk.Toplevel):
             combine_job = self.get_combine_job()
         except m_ui_excs.GetCombineJobException as exc:
             l_tkinter_utils.error_messagebox(self, str(exc))
+            self.set_requires_version_update()
             return
 
         print("tada")
