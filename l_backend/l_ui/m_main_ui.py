@@ -323,7 +323,11 @@ class MainWindow(tk.Toplevel):
 
     def get_output_path(self):
         """Gets the output path."""
-        return self.w_simple.w_output.get_result()
+        output_form = self.w_simple.w_output
+        if not output_form.is_filled():
+            raise m_ui_excs.NoOutputPath()
+
+        return output_form.get_result()
 
 
     def get_combine_job(self):
@@ -365,7 +369,7 @@ class MainWindow(tk.Toplevel):
 
         try:
             level_folders = self.get_level_folders()
-        except m_ui_excs.NoLevelFolders as exc: # TEST
+        except m_ui_excs.NoLevelFolders as exc:
             raise m_ui_excs.GetCombineJobException(str(exc)) from exc
         except import_excs as exc:
             raise_import_exc(exc, "level folder")
@@ -375,8 +379,10 @@ class MainWindow(tk.Toplevel):
         except import_excs as exc: # TEST
             raise_import_exc(exc, "base level folder")
 
-
-        output_folder_path = self.get_output_path()
+        try:
+            output_folder_path = self.get_output_path()
+        except m_ui_excs.NoOutputPath as exc:
+            raise m_ui_excs.GetCombineJobException(str(exc)) from exc
 
 
         return l_library.CombineJob(
