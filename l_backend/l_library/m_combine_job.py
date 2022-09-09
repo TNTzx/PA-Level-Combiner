@@ -9,30 +9,26 @@ class CombineJob(l_pa_cls_simple.PAObject):
     def __init__(
             self,
             version: type[l_pa_cls_simple.PAVersion] | None = None,
-            level_folder_paths: list[str] = None,
-            base_level_folder_path: str | None = None,
+            level_folders: list[l_pa_cls_simple.LevelFolder] = None,
+            base_level_folder: l_pa_cls_simple.LevelFolder | None = None,
             output_folder_path: str | None = None,
             combine_settings: l_pa_cls_simple.CombineSettings = l_pa_cls_simple.CombineSettings(),
         ):
-        if level_folder_paths is None:
-            level_folder_paths = []
+        if level_folders is None:
+            level_folders = []
 
         self.version = version
-        self.level_folder_paths = level_folder_paths
-        self.base_level_folder_path = base_level_folder_path
+        self.level_folders = level_folders
+        self.base_level_folder = base_level_folder
         self.output_folder_path = output_folder_path
         self.combine_settings = combine_settings
 
 
     def run_job(self):
         """Runs the job."""
-        import_level_folder = self.version.import_level_folder
-        level_folders = [import_level_folder(path) for path in self.level_folder_paths]
-        base_level = import_level_folder(self.base_level_folder_path) if self.base_level_folder_path is not None else None
-
         combined = l_pa_cls_simple.LevelFolder.combine_folders(
-            level_folders = level_folders,
-            primary_level_folder = base_level,
+            level_folders = self.level_folders,
+            primary_level_folder = self.base_level_folder,
             combine_settings = self.combine_settings
         )
 

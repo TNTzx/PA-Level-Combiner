@@ -302,29 +302,80 @@ class MainWindow(tk.Toplevel):
             version.import_level_folder(folder_path, load_audio = False)
             for folder_path in self.level_folder_paths[1:]
         ]
-        return [first_level_folder] + rest_level_folders
+
+        level_folders = [first_level_folder] + rest_level_folders
+        if len(level_folders) == 0:
+            raise m_ui_excs.NoLevelFolders()
+
+        return level_folders
 
     def get_base_level_folder(self):
         """Gets the base level."""
-        return self.get_version().import_level_folder(
-            self.w_advanced.w_base_level.get_result()
-        )
+        base_level_form = self.w_advanced.w_base_level
+        if not base_level_form.is_filled():
+            return None
+
+        return self.get_version().import_level_folder(base_level_form.get_result())
 
     def get_output_path(self):
         """Gets the output path."""
-        path = self.w_simple.w_output.get_result()
-        if not l_pa_cls_simple.path_exists(path):
-            raise l_pa_cls_simple.FolderNotFound(path)
-        return path
+        return self.w_simple.w_output.get_result()
 
 
     def get_combine_job(self):
         """Gets the combine job."""
         try:
             version = self.get_version()
-        except l_pa_cls_simple.VersionNotFound:
-            raise 
+        except l_pa_cls_simple.VersionNotFound as exc:
+            raise m_ui_excs.GetCombineJobException(f"Version {exc.missing_version_number} is not supported!") from exc
 
-    def run_job(self):
+
+        import_excs = (l_pa_cls_simple.FolderNotFound, l_pa_cls_simple.LevelFileNotFound, l_pa_cls_simple.IncompatibleVersionImport)
+
+        def raise_import_exc(import_exc: l_pa_cls_simple.ImportException, level_folder_type: str):
+            """Raises a `GetCombineJobException` based on the import exception."""
+            if isinstance(import_exc, l_pa_cls_simple.FolderNotFound): # TEST
+                raise m_ui_excs.GetCombineJobException(
+                    f"The {level_folder_type} {import_exc.not_found_folder} can't be found!"
+                ) from exc
+            if isinstance(import_exc, l_pa_cls_simple.LevelFileNotFound): # TEST
+                raise m_ui_excs.GetCombineJobException(
+                    f"The {level_folder_type} {exc.level_folder_path} doesn't have the {exc.missing_file} file!"
+                ) from exc
+            if isinstance(import_exc, l_pa_cls_simple.IncompatibleVersionImport): # TEST
+                raise m_ui_excs.GetCombineJobException(
+                    (
+                        f"The {level_folder_type} {exc.level_folder_path} with version {exc.importing_version_num} "
+                        f"is not compatible with the currently selected version ({exc.current_version_num})."
+                    )
+                ) from exc
+
+        try:
+            level_folders = self.get_level_folders()
+        except m_ui_excs.NoLevelFolders as exc: # TEST
+            raise m_ui_excs.GetCombineJobException(str(exc)) from exc
+        except import_excs as exc:
+            raise_import_exc(exc, "level folder")
+
+        try:
+            base_level_folder = self.get_base_level_folder()
+        except import_excs as exc: # TEST
+            raise_import_exc(exc, "base level folder")
+
+
+        output_folder_path = self.get_output_path()
+
+
+        return l_library.CombineJob(
+            version = version,
+            level_folders = level_folders,
+            base_level_folder = base_level_folder,
+            output_folder_path = output_folder_path,
+            combine_settings = self.combine_settings
+        )
+
+
+    def run_combine_job(self):
         """Runs the combine job."""
         # TODO
+        # TODO remember to make the output path if it doesn't exist
