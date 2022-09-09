@@ -396,12 +396,83 @@ class MainWindow(tk.Toplevel):
 
     def run_combine_job(self):
         """Runs the combine job."""
-        # TODO remember to make the output path if it doesn't exist
-        try:
-            combine_job = self.get_combine_job()
-        except m_ui_excs.GetCombineJobException as exc:
-            l_tkinter_utils.error_messagebox(self, str(exc))
-            self.set_requires_version_update()
+        confirm = l_tkinter_utils.messagebox(
+            self,
+            title = "Confirm Combine Start",
+            description = "Do you want to start combining now?",
+            options = (l_tkinter_utils.Options.yes, l_tkinter_utils.Options.no)
+        )
+        if confirm == l_tkinter_utils.Options.no:
             return
 
-        print("tada")
+
+        class JobProgress(l_tkinter_utils.ProgressbarPopup):
+            """The progress bar."""
+            def __init__(self, parent: tk.Widget):
+                super().__init__(parent)
+                l_tkinter_utils.window_set_size(self, 720, 480)
+                l_tkinter_utils.window_center_to_screen(self)
+
+            class TitledProgressbar(l_tkinter_utils.TitledProgressbar):
+                """The titled progressbar."""
+                def __init__(self, parent: tk.Widget):
+                    super().__init__(parent)
+
+                class Title(l_tkinter_utils.Title):
+                    """The title widget."""
+                    def __init__(self, parent: tk.Widget):
+                        super().__init__(parent, title = "Combining...")
+
+                class Progressbar(ttk.Progressbar):
+                    """The progressbar."""
+                    def __init__(self, parent: tk.Widget):
+                        super().__init__(parent, orient = tk.HORIZONTAL, mode = "indeterminate")
+
+
+            def set_description(self, desc: str):
+                """Sets the description."""
+                self.w_titled_progressbar.w_title.set_description(desc)
+
+
+        job_progress = JobProgress(self)
+        l_tkinter_utils.window_set_visibility(job_progress, False)
+
+        def run_job():
+            """Runs the job."""
+            l_tkinter_utils.window_set_visibility(job_progress, True)
+            l_tkinter_utils.set_active(self, False)
+
+            job_progress.set_description("Getting job...")
+
+            try:
+                combine_job = self.get_combine_job()
+            except m_ui_excs.GetCombineJobException as exc:
+                l_tkinter_utils.error_messagebox(self, str(exc))
+                self.set_requires_version_update()
+                return
+
+            job_progress.set_description("Combining and writing to output path...")
+
+            combine_job.run_job()
+
+            finish_job()
+
+
+        def finish_job():
+            l_tkinter_utils.window_set_visibility(job_progress, False)
+
+            open_level_folder = "Open Level Folder"
+            finish_choose = l_tkinter_utils.messagebox(
+                self,
+                title = "Finished",
+                description = "Combining finished!",
+                options = (l_tkinter_utils.Options.ok, open_level_folder)
+            )
+
+            l_tkinter_utils.set_active(self, True)
+
+            if finish_choose == open_level_folder:
+                l_pa_cls_simple.open_file_in_explorer(self.get_combine_job().output_folder_path)
+
+
+        l_tkinter_utils.run_progress_func(run_job)
