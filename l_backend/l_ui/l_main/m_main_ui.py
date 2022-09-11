@@ -12,8 +12,9 @@ import tkinter.filedialog as tkfd
 import l_tkinter_utils
 import l_pa_cls_simple
 
-from .. import l_library
-from . import m_main_mixin, m_combine_option, m_ui_excs
+from ... import l_library
+from .. import m_combine_option, m_ui_excs
+from . import m_main_mixin
 
 
 class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):

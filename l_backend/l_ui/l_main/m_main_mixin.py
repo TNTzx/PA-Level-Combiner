@@ -6,7 +6,7 @@ import tkinter.ttk as ttk
 
 import l_tkinter_utils
 
-from . import m_simple, m_advanced
+from .. import m_simple, m_advanced
 
 
 class MainWindowMixin():
