@@ -13,7 +13,7 @@ import l_tkinter_utils
 import l_pa_cls_simple
 
 from ... import l_library
-from .. import m_combine_option, m_ui_excs
+from .. import m_combine_option, m_ui_excs, l_extra_info
 from . import m_main_mixin, m_checks
 
 
@@ -33,6 +33,9 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
         self.w_view_manager = self.ViewManager(self)
         self.w_combine_controls = self.CombineButton(self)
         self.w_misc_buttons = self.MiscButtons(self)
+
+        self.w_instructions = l_extra_info.Instructions(self)
+        l_tkinter_utils.window_set_visibility(self.w_instructions, False)
 
 
         self.w_simple = self.w_view_manager.w_simple
@@ -404,3 +407,9 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
 
 
         l_tkinter_utils.progress_run_func(run_job)
+
+
+
+    def open_instructions(self):
+        """Opens the instructions menu."""
+        l_tkinter_utils.window_set_visibility(self.w_instructions, True)
