@@ -29,6 +29,10 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
         l_tkinter_utils.window_center_to_screen(self)
         l_tkinter_utils.window_set_title(self, "PA Level Combiner")
 
+
+        l_tkinter_utils.notebook_set_style()
+
+
         self.w_title = self.Title(self)
         self.w_view_manager = self.ViewManager(self)
         self.w_combine_controls = self.CombineButton(self)

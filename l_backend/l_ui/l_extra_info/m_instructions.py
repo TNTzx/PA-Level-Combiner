@@ -30,7 +30,6 @@ class Instructions(tk.Toplevel):
         def __init__(self, parent: tk.Widget):
             super().__init__(parent)
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
-            l_tkinter_utils.notebook_set_style(self)
 
     class Close(tk.Button):
         """The close button."""

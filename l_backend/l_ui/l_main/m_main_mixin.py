@@ -10,6 +10,7 @@ from .. import m_simple, m_advanced
 
 
 class MainWindowMixin():
+    """The main window mixin."""
     class Title(l_tkinter_utils.Title):
         """The title."""
         def __init__(self, parent: tk.Widget):
@@ -21,7 +22,6 @@ class MainWindowMixin():
         def __init__(self, parent: tk.Widget):
             super().__init__(parent)
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
-            l_tkinter_utils.notebook_set_style(self)
 
             self.w_simple = m_simple.SimpleView(self)
             self.w_advanced = m_advanced.AdvancedView(self)
