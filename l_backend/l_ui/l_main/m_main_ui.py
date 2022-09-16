@@ -29,7 +29,6 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
         l_tkinter_utils.window_center_to_screen(self)
         l_tkinter_utils.window_set_title(self, "PA Level Combiner")
 
-
         l_tkinter_utils.notebook_set_style()
 
 
@@ -94,6 +93,9 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
         l_tkinter_utils.button_link(self.w_advanced.w_options.w_button, self.open_combine_options)
 
         l_tkinter_utils.button_link(self.w_combine_controls.w_button, self.run_combine_job)
+
+
+        l_tkinter_utils.button_link(self.w_misc_buttons.w_instructions, self.open_instructions)
 
 
     def set_active_requires_version(self, active: bool):
