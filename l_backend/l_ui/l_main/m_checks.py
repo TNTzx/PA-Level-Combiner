@@ -12,11 +12,11 @@ def to_lfolder_import_exc(import_exc: l_pa_cls_simple.ImportException | m_ui_exc
         lf_import_exc = m_ui_excs.LevelFolderImportException(
             f"The folder \"{import_exc.not_found_folder}\" can't be found!"
         )
-    if isinstance(import_exc, l_pa_cls_simple.LevelFileNotFound):
+    elif isinstance(import_exc, l_pa_cls_simple.LevelFileNotFound):
         lf_import_exc = m_ui_excs.LevelFolderImportException(
             f"The level folder \"{import_exc.level_folder_path}\" doesn't have the {import_exc.missing_file} file!"
         )
-    if isinstance(import_exc, l_pa_cls_simple.IncompatibleVersionImport):
+    elif isinstance(import_exc, l_pa_cls_simple.IncompatibleVersionImport):
         lf_import_exc = m_ui_excs.LevelFolderImportException(
             (
                 f"The level folder \"{import_exc.level_folder_path}\" with version {import_exc.importing_version_num} "
@@ -35,6 +35,6 @@ def check_level_folder(version: l_pa_cls_simple.PAVersion, folder_path: str):
     try:
         version.import_level_folder(folder_path)
     except l_pa_cls_simple.ImportException as exc:
-        raise to_lfolder_import_exc(folder_path) from exc
+        raise to_lfolder_import_exc(exc) from exc
 
     return True

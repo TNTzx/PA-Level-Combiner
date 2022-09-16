@@ -168,7 +168,7 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
             try:
                 m_checks.check_level_folder(self.get_version(), path)
             except m_ui_excs.LevelFolderImportException as exc:
-                l_tkinter_utils.messagebox(self, "Invalid level folder!", str(exc), (l_tkinter_utils.Options.ok))
+                l_tkinter_utils.messagebox(self, "Invalid level folder!", str(exc), (l_tkinter_utils.Options.ok, ))
                 continue
 
             break
