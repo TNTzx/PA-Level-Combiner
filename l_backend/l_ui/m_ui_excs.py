@@ -24,5 +24,9 @@ class NoOutputPath(UIException):
         super().__init__("There's no specified output level folder.")
 
 
+class LevelFolderImportException(UIException):
+    """An exception occurred when trying to import a level folder."""
+
+
 class GetCombineJobException(UIException):
     """An exception occurred in the combine job exception."""

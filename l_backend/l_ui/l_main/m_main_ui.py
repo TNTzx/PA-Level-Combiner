@@ -14,7 +14,7 @@ import l_pa_cls_simple
 
 from ... import l_library
 from .. import m_combine_option, m_ui_excs
-from . import m_main_mixin
+from . import m_main_mixin, m_checks
 
 
 class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
@@ -87,6 +87,7 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
         l_tkinter_utils.button_link(self.w_advanced.w_options.w_button, self.open_combine_options)
 
         l_tkinter_utils.button_link(self.w_combine_controls.w_button, self.run_combine_job)
+
 
     def set_active_requires_version(self, active: bool):
         """Sets the activity of the widgets that requires the version field to be filled."""
@@ -162,6 +163,10 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
         path = tkfd.askdirectory(title = "Select a folder containing a level")
         if path == "":
             return
+
+        try:
+            m_checks.check_level_folder(self.get_version(), path)
+        except
         self.level_folder_paths.append(path)
 
 
@@ -272,51 +277,29 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
 
     def get_combine_job(self):
         """Gets the combine job."""
-        def raise_not_selected_version(not_selected_exc: m_ui_excs.VersionNotSelected):
-            """Raises an exception when the version is not selected."""
-            if isinstance(not_selected_exc, m_ui_excs.VersionNotSelected):
-                raise m_ui_excs.GetCombineJobException(str(not_selected_exc)) from not_selected_exc
-
         try:
             version = self.get_version()
         except m_ui_excs.VersionNotSelected as exc:
-            raise_not_selected_version(exc)
+            raise m_ui_excs.GetCombineJobException(str(exc)) from exc
         except l_pa_cls_simple.VersionNotFound as exc:
             raise m_ui_excs.GetCombineJobException(f"Version {exc.missing_version_number} is not supported!") from exc
 
 
-        import_excs = (l_pa_cls_simple.FolderNotFound, l_pa_cls_simple.LevelFileNotFound, l_pa_cls_simple.IncompatibleVersionImport)
-
-        def raise_import_exc(import_exc: l_pa_cls_simple.ImportException | m_ui_excs.UIException, level_folder_type: str):
-            """Raises a `GetCombineJobException` based on the import exception."""
-            if isinstance(import_exc, l_pa_cls_simple.FolderNotFound):
-                raise m_ui_excs.GetCombineJobException(
-                    f"The {level_folder_type} \"{import_exc.not_found_folder}\" can't be found!"
-                ) from import_exc
-            if isinstance(import_exc, l_pa_cls_simple.LevelFileNotFound):
-                raise m_ui_excs.GetCombineJobException(
-                    f"The {level_folder_type} \"{import_exc.level_folder_path}\" doesn't have the {import_exc.missing_file} file!"
-                ) from import_exc
-            if isinstance(import_exc, l_pa_cls_simple.IncompatibleVersionImport):
-                raise m_ui_excs.GetCombineJobException(
-                    (
-                        f"The {level_folder_type} \"{import_exc.level_folder_path}\" with version {import_exc.importing_version_num} "
-                        f"is not compatible with the currently selected version ({import_exc.current_version_num})."
-                    )
-                ) from import_exc
-            if isinstance(import_exc, m_ui_excs.VersionNotSelected):
-                raise_not_selected_version(import_exc)
+        def raise_import_exc(import_exc: l_pa_cls_simple.ImportException, source: str):
+            """Raises the import exception."""
+            new_exc = m_checks.to_lfolder_import_exc(import_exc)
+            raise m_ui_excs.GetCombineJobException(f"{source.capitalize()}: " + str(new_exc)) from new_exc
 
         try:
             level_folders = self.get_level_folders()
         except m_ui_excs.NoLevelFolders as exc:
             raise m_ui_excs.GetCombineJobException(str(exc)) from exc
-        except import_excs as exc:
+        except l_pa_cls_simple.ImportException as exc:
             raise_import_exc(exc, "level folder")
 
         try:
             base_level_folder = self.get_base_level_folder()
-        except import_excs as exc: # TEST
+        except l_pa_cls_simple.ImportException as exc:
             raise_import_exc(exc, "base level folder")
 
         try:
