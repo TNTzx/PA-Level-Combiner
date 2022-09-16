@@ -160,13 +160,19 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
     @_update_wrapper
     def add_level_folder(self):
         """Adds a level folder."""
-        path = tkfd.askdirectory(title = "Select a folder containing a level")
-        if path == "":
-            return
+        while True:
+            path = tkfd.askdirectory(title = "Select a folder containing a level")
+            if path == "":
+                return
 
-        try:
-            m_checks.check_level_folder(self.get_version(), path)
-        except
+            try:
+                m_checks.check_level_folder(self.get_version(), path)
+            except m_ui_excs.LevelFolderImportException as exc:
+                l_tkinter_utils.messagebox(self, "Invalid level folder!", str(exc), (l_tkinter_utils.Options.ok))
+                continue
+
+            break
+
         self.level_folder_paths.append(path)
 
 
