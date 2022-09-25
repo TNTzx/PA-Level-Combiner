@@ -28,7 +28,7 @@ class Instructions(tk.Toplevel):
     class Notebook(ttk.Notebook):
         """Notebook!"""
         def __init__(self, parent: tk.Widget):
-            super().__init__(parent)
+            super().__init__(parent, height = 500, width = 500)
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
 
             self.frame_infos = [
@@ -37,6 +37,14 @@ class Instructions(tk.Toplevel):
             ]
 
             l_tkinter_utils.notebook_add_frames(self, self.frame_infos)
+
+            # self.bind("<Visibility>", self.update_everything)
+
+
+        def update_everything(self, event: tk.Event):
+            """Updates everything."""
+            for frame_info in self.frame_infos:
+                frame_info.frame.update()
 
     class Close(tk.Button):
         """The close button."""
@@ -139,18 +147,20 @@ class SimpleTab(InstructionTab):
                     "\tThis is where you manage which levels are going to be combined."
                 ),
 
-                    l_tkinter_utils.LabelFormatText(
-                        "Add Level Folder",
-                        font = self.header_font,
-                        bullet_level = 2
+                l_tkinter_utils.LabelFormatText(
+                    "Add Level Folder",
+                    font = self.header_font,
+                    bullet_level = 1
+                ),
+                l_tkinter_utils.LabelFormatText(
+                    (
+                        "This is where you add a level folder. Clicking this button will bring up a dialog box which is where you can select a folder that contains a level.\n"
+                        "If the level is invalid, an error pops up."
                     ),
-                    l_tkinter_utils.LabelFormatText(
-                        (
-                            "This is where you add a level folder. Clicking this button will bring up a dialog box which is where you can select a folder that contains a level.\n"
-                            "If the level is invalid, an error pops up."
-                        ),
-                        bullet_char = "\t",
-                        bullet_level = 2
-                    ),
+                    bullet_char = "\t",
+                    bullet_level = 1
+                ),
             ]
         )
+
+        
