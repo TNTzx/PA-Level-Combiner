@@ -37,9 +37,7 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
         self.w_combine_controls = self.CombineButton(self)
         self.w_misc_buttons = self.MiscButtons(self)
 
-        self.w_instructions = l_extra_info.Instructions(self)
-        l_tkinter_utils.window_set_visibility(self.w_instructions, False)
-
+        self.w_instructions = None
 
         self.w_simple = self.w_view_manager.w_simple
         self.w_level_listbox = self.w_simple.w_level_select.w_level_list.w_listbox
@@ -418,4 +416,7 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
 
     def open_instructions(self):
         """Opens the instructions menu."""
-        l_tkinter_utils.window_set_visibility(self.w_instructions, True)
+        if self.w_instructions is not None and l_tkinter_utils.window_is_open(self.w_instructions, True):
+            l_tkinter_utils.window_focus(self.w_instructions)
+        else:
+            self.w_instructions = l_extra_info.Instructions(self)
