@@ -11,7 +11,7 @@ class Instructions(tk.Toplevel):
     """Contains the instructions."""
     def __init__(self, parent: tk.Widget):
         super().__init__(parent)
-        l_tkinter_utils.set_weights(self, y = (1, 1, 1))
+        l_tkinter_utils.set_weights(self, y = (1, 3, 1))
         l_tkinter_utils.window_set_size(self, 720, 720)
         l_tkinter_utils.window_center_to_screen(self)
 
@@ -35,6 +35,8 @@ class Instructions(tk.Toplevel):
                 l_tkinter_utils.NotebookFrameInfo("Workflow", Workflow(self))
             ]
 
+            l_tkinter_utils.notebook_add_frames(self, self.frame_infos)
+
     class Close(tk.Button):
         """The close button."""
         def __init__(self, parent: tk.Widget):
@@ -56,7 +58,6 @@ class Workflow(l_tkinter_utils.ScrollableFrame):
         def __init__(self, parent: tk.Widget):
             super().__init__(parent)
             l_tkinter_utils.place_on_grid(self)
-            l_tkinter_utils.set_font(self)
 
             texts = [
                 l_tkinter_utils.LabelFormatText(
