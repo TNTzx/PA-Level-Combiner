@@ -38,14 +38,6 @@ class Instructions(tk.Toplevel):
 
             l_tkinter_utils.notebook_add_frames(self, self.frame_infos)
 
-            # self.bind("<Visibility>", self.update_everything)
-
-
-        def update_everything(self, event: tk.Event):
-            """Updates everything."""
-            for frame_info in self.frame_infos:
-                frame_info.frame.update()
-
     class Close(tk.Button):
         """The close button."""
         def __init__(self, parent: tk.Widget):
