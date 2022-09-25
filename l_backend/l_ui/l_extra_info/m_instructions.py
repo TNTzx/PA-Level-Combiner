@@ -32,7 +32,8 @@ class Instructions(tk.Toplevel):
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
 
             self.frame_infos = [
-                l_tkinter_utils.NotebookFrameInfo("Workflow", WorkflowTab(self))
+                l_tkinter_utils.NotebookFrameInfo("Workflow", WorkflowTab(self)),
+                l_tkinter_utils.NotebookFrameInfo("Simple Tab", SimpleTab(self))
             ]
 
             l_tkinter_utils.notebook_add_frames(self, self.frame_infos)
@@ -54,6 +55,7 @@ class InstructionTab(l_tkinter_utils.ScrollableFrame):
         self.w_label_format = self.LabelFormat(self.w_canvas.w_frame)
 
         self.title_font = l_tkinter_utils.make_font(size_mult = 2, bold = True)
+        self.header_font = l_tkinter_utils.make_font(bold = True)
 
     class LabelFormat(l_tkinter_utils.LabelFormat):
         """The label."""
@@ -107,20 +109,48 @@ class SimpleTab(InstructionTab):
                     font = self.title_font,
                     anchor = tk.CENTER
                 ),
+
                 l_tkinter_utils.LabelFormatText(
-                    "1. Select the PA version of the levels that you'll use to combine."
+                    "PA Version",
+                    font = self.header_font,
+                    bullet_level = 1
                 ),
                 l_tkinter_utils.LabelFormatText(
-                    "2. Add your level folders using the \"Add Level Folder\" button. Edit and delete if necessary."
+                    (
+                        "\tThis is where you select the PA version. The available PA versions are the only ones supported in the program.\n"
+                        "\tInitially, most buttons are deactivated. To activate them, select a PA version.\n"
+                        "\n"
+                        "\tYou have to select the PA version where all of the levels that you're going to combine are in. "
+                        "If your levels are not in the same version, you can open the levels in the PA editor with your desired version, then save the levels.\n"
+                        "\n"
+                        "\tSwitching versions while you still have added levels will remove the levels in the list after a warning pops up.\n"
+                        "\tThe \"Clear\" button besides the PA version select will clear the PA version. This will also remove the levels in the list if there are any.\n"
+                        "\n"
+                        "\tYogurt"
+                    )
+                ),
+
+                l_tkinter_utils.LabelFormatText(
+                    "Level Select",
+                    font = self.header_font,
+                    bullet_level = 1
                 ),
                 l_tkinter_utils.LabelFormatText(
-                    "3. Create a folder to store the combined level, then use the \"Browse\" button to set the output folder to that folder."
+                    "\tThis is where you manage which levels are going to be combined."
                 ),
-                l_tkinter_utils.LabelFormatText(
-                    "4. Set other combine options in the \"Advanced\" tab."
-                ),
-                l_tkinter_utils.LabelFormatText(
-                    "5. Press the combine button!"
-                )
+
+                    l_tkinter_utils.LabelFormatText(
+                        "Add Level Folder",
+                        font = self.header_font,
+                        bullet_level = 2
+                    ),
+                    l_tkinter_utils.LabelFormatText(
+                        (
+                            "This is where you add a level folder. Clicking this button will bring up a dialog box which is where you can select a folder that contains a level.\n"
+                            "If the level is invalid, an error pops up."
+                        ),
+                        bullet_char = "\t",
+                        bullet_level = 2
+                    ),
             ]
         )
