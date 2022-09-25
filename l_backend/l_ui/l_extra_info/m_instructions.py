@@ -32,7 +32,7 @@ class Instructions(tk.Toplevel):
             l_tkinter_utils.place_on_grid(self, coords = (0, 1))
 
             self.frame_infos = [
-                l_tkinter_utils.NotebookFrameInfo("Workflow", Workflow(self))
+                l_tkinter_utils.NotebookFrameInfo("Workflow", WorkflowTab(self))
             ]
 
             l_tkinter_utils.notebook_add_frames(self, self.frame_infos)
@@ -45,13 +45,13 @@ class Instructions(tk.Toplevel):
             l_tkinter_utils.set_font(self)
 
 
-class Workflow(l_tkinter_utils.ScrollableFrame):
-    """Workflow tab"""
+class InstructionTab(l_tkinter_utils.ScrollableFrame):
+    """Instruction tab."""
     def __init__(self, parent: tk.Widget):
         super().__init__(parent)
         l_tkinter_utils.place_on_grid(self)
 
-        self.w_label_format = self.LabelFormat(self.w_canvas.w_frame)
+        self.w_label_format = self.LabelFormat(self.w_canvas.w_frame,)
 
     class LabelFormat(l_tkinter_utils.LabelFormat):
         """The label."""
@@ -59,7 +59,17 @@ class Workflow(l_tkinter_utils.ScrollableFrame):
             super().__init__(parent)
             l_tkinter_utils.place_on_grid(self)
 
-            texts = [
+    def set_texts(self, texts: list[l_tkinter_utils.LabelFormatText]):
+        """Sets the texts."""
+        self.w_label_format.add_texts(texts)
+
+
+class WorkflowTab(InstructionTab):
+    """The workflow tab."""
+    def __init__(self, parent: tk.Widget):
+        super().__init__(parent)
+        self.set_texts(
+            [
                 l_tkinter_utils.LabelFormatText(
                     "1. Select the PA version of the levels that you'll use to combine."
                 ),
@@ -75,6 +85,5 @@ class Workflow(l_tkinter_utils.ScrollableFrame):
                 l_tkinter_utils.LabelFormatText(
                     "5. Press the combine button!"
                 )
-            ]
-
-            self.add_texts(texts)
+            ] + [l_tkinter_utils.LabelFormatText(text) for text in range(20)]
+        )
