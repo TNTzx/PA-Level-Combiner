@@ -51,7 +51,9 @@ class InstructionTab(l_tkinter_utils.ScrollableFrame):
         super().__init__(parent)
         l_tkinter_utils.place_on_grid(self)
 
-        self.w_label_format = self.LabelFormat(self.w_canvas.w_frame,)
+        self.w_label_format = self.LabelFormat(self.w_canvas.w_frame)
+
+        self.title_font = l_tkinter_utils.make_font(size_mult = 2, bold = True)
 
     class LabelFormat(l_tkinter_utils.LabelFormat):
         """The label."""
@@ -71,6 +73,11 @@ class WorkflowTab(InstructionTab):
         self.set_texts(
             [
                 l_tkinter_utils.LabelFormatText(
+                    "Workflow",
+                    font = self.title_font,
+                    anchor = tk.CENTER
+                ),
+                l_tkinter_utils.LabelFormatText(
                     "1. Select the PA version of the levels that you'll use to combine."
                 ),
                 l_tkinter_utils.LabelFormatText(
@@ -85,5 +92,35 @@ class WorkflowTab(InstructionTab):
                 l_tkinter_utils.LabelFormatText(
                     "5. Press the combine button!"
                 )
-            ] + [l_tkinter_utils.LabelFormatText(text) for text in range(20)]
+            ]
+        )
+
+
+class SimpleTab(InstructionTab):
+    """The workflow tab."""
+    def __init__(self, parent: tk.Widget):
+        super().__init__(parent)
+        self.set_texts(
+            [
+                l_tkinter_utils.LabelFormatText(
+                    "The Simple Tab",
+                    font = self.title_font,
+                    anchor = tk.CENTER
+                ),
+                l_tkinter_utils.LabelFormatText(
+                    "1. Select the PA version of the levels that you'll use to combine."
+                ),
+                l_tkinter_utils.LabelFormatText(
+                    "2. Add your level folders using the \"Add Level Folder\" button. Edit and delete if necessary."
+                ),
+                l_tkinter_utils.LabelFormatText(
+                    "3. Create a folder to store the combined level, then use the \"Browse\" button to set the output folder to that folder."
+                ),
+                l_tkinter_utils.LabelFormatText(
+                    "4. Set other combine options in the \"Advanced\" tab."
+                ),
+                l_tkinter_utils.LabelFormatText(
+                    "5. Press the combine button!"
+                )
+            ]
         )
