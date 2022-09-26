@@ -38,6 +38,7 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
         self.w_misc_buttons = self.MiscButtons(self)
 
         self.w_instructions = None
+        self.w_about = None
 
         self.w_simple = self.w_view_manager.w_simple
         self.w_level_listbox = self.w_simple.w_level_select.w_level_list.w_listbox
@@ -94,6 +95,7 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
 
 
         l_tkinter_utils.button_link(self.w_misc_buttons.w_instructions, self.open_instructions)
+        l_tkinter_utils.button_link(self.w_misc_buttons.w_about, self.open_about)
 
 
     def set_active_requires_version(self, active: bool):
@@ -417,3 +419,7 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
     def open_instructions(self):
         """Opens the instructions menu."""
         self.w_instructions = l_tkinter_utils.window_open_if_closed(self.w_instructions, l_extra_info.Instructions(self))
+
+    def open_about(self):
+        """Opens the about menu."""
+        self.w_about = l_tkinter_utils.window_open_if_closed(self.w_about, l_extra_info.About(self))

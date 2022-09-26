@@ -11,9 +11,10 @@ class Instructions(tk.Toplevel):
     """Contains the instructions."""
     def __init__(self, parent: tk.Widget):
         super().__init__(parent)
-        l_tkinter_utils.set_weights(self, y = (1, 3, 1))
+        l_tkinter_utils.set_weights(self, y = (1, 3))
         l_tkinter_utils.window_set_size(self, 720, 720)
         l_tkinter_utils.window_center_to_screen(self)
+        l_tkinter_utils.window_set_title(self, "Instructions")
 
         self.w_title = self.Title(self)
         self.w_notebook = self.Notebook(self)
