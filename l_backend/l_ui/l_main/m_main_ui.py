@@ -416,7 +416,4 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
 
     def open_instructions(self):
         """Opens the instructions menu."""
-        if self.w_instructions is not None and l_tkinter_utils.window_is_open(self.w_instructions, True):
-            l_tkinter_utils.window_focus(self.w_instructions)
-        else:
-            self.w_instructions = l_extra_info.Instructions(self)
+        self.w_instructions = l_tkinter_utils.window_open_if_closed(self.w_instructions, l_extra_info.Instructions(self))

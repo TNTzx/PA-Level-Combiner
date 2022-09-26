@@ -17,7 +17,6 @@ class Instructions(tk.Toplevel):
 
         self.w_title = self.Title(self)
         self.w_notebook = self.Notebook(self)
-        self.w_close = self.Close(self)
 
     class Title(l_tkinter_utils.Title):
         """The title."""
@@ -38,13 +37,6 @@ class Instructions(tk.Toplevel):
             ]
 
             l_tkinter_utils.notebook_add_frames(self, self.frame_infos)
-
-    class Close(tk.Button):
-        """The close button."""
-        def __init__(self, parent: tk.Widget):
-            super().__init__(parent, text = "Close")
-            l_tkinter_utils.place_on_grid(self, coords = (0, 2))
-            l_tkinter_utils.set_font(self)
 
 
 class InstructionTab(l_tkinter_utils.ScrollableFrame):
