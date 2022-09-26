@@ -131,7 +131,7 @@ class SimpleTab(InstructionTab):
                 ),
 
                 l_tkinter_utils.LabelFormatText(
-                    "Level Select",
+                    "Level Folder List",
                     font = self.header_font,
                     bullet_level = 1
                 ),
@@ -139,20 +139,59 @@ class SimpleTab(InstructionTab):
                     "\tThis is where you manage which levels are going to be combined."
                 ),
 
+                    l_tkinter_utils.LabelFormatText(
+                        "Add Level Folder",
+                        font = self.header_font,
+                        bullet_level = 2
+                    ),
+                    l_tkinter_utils.LabelFormatText(
+                        (
+                            "This is where you add a level folder. Clicking this button will bring up a dialog box which is where you can select a folder that contains a level.\n"
+                            "If the level is invalid (not compatible with selected version, can't be imported, etc.), an error pops up.\n"
+                            "To exit without adding, simply close the dialog box."
+                        ),
+                        bullet_char = "\t",
+                        bullet_level = 2
+                    ),
+
+                    l_tkinter_utils.LabelFormatText(
+                        "Edit Level Folder",
+                        font = self.header_font,
+                        bullet_level = 2
+                    ),
+                    l_tkinter_utils.LabelFormatText(
+                        (
+                            "Edits the selected level folder. "
+                            "You must select one and only one level folder to edit."
+                        ),
+                        bullet_char = "\t",
+                        bullet_level = 2
+                    ),
+
+                    l_tkinter_utils.LabelFormatText(
+                        "Delete Level Folder",
+                        font = self.header_font,
+                        bullet_level = 2
+                    ),
+                    l_tkinter_utils.LabelFormatText(
+                        (
+                            "Deletes the selected level folders. "
+                            "You must select more than one level folder to delete from the list.\n"
+                            "Note that this doesn't delete the folder from the disk, it only removes it from the list of level folders being combined.\n"
+                        ),
+                        bullet_char = "\t",
+                        bullet_level = 2
+                    ),
+    
+
                 l_tkinter_utils.LabelFormatText(
-                    "Add Level Folder",
+                    "Output Level Folder",
                     font = self.header_font,
                     bullet_level = 1
                 ),
                 l_tkinter_utils.LabelFormatText(
-                    (
-                        "This is where you add a level folder. Clicking this button will bring up a dialog box which is where you can select a folder that contains a level.\n"
-                        "If the level is invalid, an error pops up."
-                    ),
-                    bullet_char = "\t",
-                    bullet_level = 1
+                    "\tThis is where you enter where the combined level will go to.\n"
+                    "\tClick the \"Browse\" button to browse for a folder. If the entered folder doesn't exist, the program will try to make it."
                 ),
             ]
         )
-
-        
