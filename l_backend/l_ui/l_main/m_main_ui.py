@@ -9,6 +9,8 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import tkinter.filedialog as tkfd
 
+import webbrowser
+
 import l_tkinter_utils
 import l_pa_cls_simple
 
@@ -96,6 +98,7 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
 
         l_tkinter_utils.button_link(self.w_misc_buttons.w_instructions, self.open_instructions)
         l_tkinter_utils.button_link(self.w_misc_buttons.w_about, self.open_about)
+        l_tkinter_utils.button_link(self.w_misc_buttons.w_github, self.open_github)
 
 
     def set_active_requires_version(self, active: bool):
@@ -194,23 +197,32 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
             return
         selected: str = selected[0]
 
-        class EntryBrowseForm(l_tkinter_utils.EntryBrowseForm):
-            """Form......"""
-            def __init__(self, parent: tk.Widget):
-                super().__init__(
-                    parent,
-                    label_text = "Enter the new path to edit the current level folder path.",
-                    label_size_mult = 1,
-                    initial = selected
-                )
+        while True:
+            class EntryBrowseForm(l_tkinter_utils.EntryBrowseForm):
+                """Form......"""
+                def __init__(self, parent: tk.Widget):
+                    super().__init__(
+                        parent,
+                        label_text = "Enter the new path to edit the current level folder path.",
+                        label_size_mult = 1,
+                        initial = selected
+                    )
 
-            def browse(self) -> str:
-                return tkfd.askdirectory(title = "Choose a level folder.")
+                def browse(self) -> str:
+                    return tkfd.askdirectory(title = "Choose a level folder.")
 
-        form_result = l_tkinter_utils.form_messagebox(self, EntryBrowseForm, "Edit Level Folder Path")
+            form_result = l_tkinter_utils.form_messagebox(self, EntryBrowseForm, "Edit Level Folder Path")
 
-        if form_result is None:
-            return
+            try:
+                m_checks.check_level_folder(self.get_version(), form_result)
+            except m_ui_excs.LevelFolderImportException as exc:
+                l_tkinter_utils.messagebox(self, "Invalid level folder!", str(exc), (l_tkinter_utils.Options.ok, ))
+                continue
+
+            if form_result is None:
+                return
+
+            break
 
         selected_index = self.level_folder_paths.index(selected)
         self.level_folder_paths[selected_index] = form_result
@@ -423,3 +435,8 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
     def open_about(self):
         """Opens the about menu."""
         self.w_about = l_tkinter_utils.window_open_if_closed(self.w_about, l_extra_info.About(self))
+
+    
+    def open_github(self):
+        """Opens the Github page."""
+        webbrowser.open("https://www.github.com/TNTzx/PA-Level-Combiner", new = 0, autoraise = True)
