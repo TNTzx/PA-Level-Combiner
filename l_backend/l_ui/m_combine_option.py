@@ -22,6 +22,7 @@ class CombineOptionWindow(tk.Toplevel):
         l_tkinter_utils.window_set_size(self, 1000, 600)
         l_tkinter_utils.window_center_to_screen(self)
         l_tkinter_utils.set_weights(self, y = (1, 1, 1))
+        l_tkinter_utils.window_set_title(self, "Combine Settings")
 
         self.w_parent = parent
 

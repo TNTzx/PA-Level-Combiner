@@ -444,12 +444,8 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
             l_tkinter_utils.error_messagebox(self, "The Chrome browser can't be found!")
 
         try:
-            chrome = webbrowser.get("C:/Program Files (x86)/Google/Chrome/Application/chrome.exe")
+            chrome = webbrowser.get("C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s &")
         except webbrowser.Error:
-            show_error()
-            return
-
-        if isinstance(chrome, webbrowser.GenericBrowser):
             show_error()
             return
 
