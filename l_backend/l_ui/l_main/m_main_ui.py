@@ -23,7 +23,7 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
     """The main window."""
     def __init__(self, parent: tk.Widget, combine_job: l_library.CombineJob = None):
         if combine_job is None:
-            combine_job = l_library.CombineJob(version = l_pa_cls_simple.v20_4_4, output_folder_path = "D:/Xander Files/[1] cluster/[1] self/[4] programming/[1] tools/pa level combiner/v2/test environment/combining/output/test")
+            combine_job = l_library.CombineJob()
 
         super().__init__(parent)
         l_tkinter_utils.set_weights(self, y = (1 for _ in range(4)))
@@ -50,9 +50,6 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
 
         self.level_folder_paths = [
             str(level_folder) for level_folder in combine_job.level_folders
-        ] + [
-            "D:/Xander Files/[1] cluster/[1] self/[4] programming/[1] tools/pa level combiner/v2/test environment/combining/base/pacm combine level 1",
-            "D:/Xander Files/[1] cluster/[1] self/[4] programming/[1] tools/pa level combiner/v2/test environment/combining/base/pacm combine level 2"
         ]
         l_tkinter_utils.listbox_update(self.w_simple.w_level_select.w_level_list.w_listbox, self.level_folder_paths)
         self.combine_settings = combine_job.combine_settings
