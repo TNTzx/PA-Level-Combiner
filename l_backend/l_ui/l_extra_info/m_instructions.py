@@ -33,7 +33,8 @@ class Instructions(tk.Toplevel):
 
             self.frame_infos = [
                 l_tkinter_utils.NotebookFrameInfo("Workflow", WorkflowTab(self)),
-                l_tkinter_utils.NotebookFrameInfo("Simple Tab", SimpleTab(self))
+                l_tkinter_utils.NotebookFrameInfo("Simple Tab", SimpleTab(self)),
+                l_tkinter_utils.NotebookFrameInfo("Advanced Tab", AdvancedTab(self))
             ]
 
             l_tkinter_utils.notebook_add_frames(self, self.frame_infos)
@@ -99,7 +100,7 @@ class WorkflowTab(InstructionTab):
 
 
 class SimpleTab(InstructionTab):
-    """The workflow tab."""
+    """The simple tab."""
     def __init__(self, parent: tk.Widget):
         super().__init__(parent)
         self.set_texts(
@@ -182,7 +183,7 @@ class SimpleTab(InstructionTab):
                         bullet_char = "\t",
                         bullet_level = 2
                     ),
-    
+
 
                 l_tkinter_utils.LabelFormatText(
                     "Output Level Folder",
@@ -192,6 +193,109 @@ class SimpleTab(InstructionTab):
                 l_tkinter_utils.LabelFormatText(
                     "\tThis is where you enter where the combined level will go to.\n"
                     "\tClick the \"Browse\" button to browse for a folder. If the entered folder doesn't exist, the program will try to make it."
+                )
+            ]
+        )
+
+
+class AdvancedTab(InstructionTab):
+    """The advanced tab."""
+    def __init__(self, parent: tk.Widget):
+        super().__init__(parent)
+        self.set_texts(
+            [
+                l_tkinter_utils.LabelFormatText(
+                    "The Advanced Tab",
+                    font = self.title_font,
+                    anchor = tk.CENTER
+                ),
+
+                l_tkinter_utils.LabelFormatText(
+                    "Combine Options",
+                    font = self.header_font,
+                    bullet_level = 1
+                ),
+                l_tkinter_utils.LabelFormatText(
+                    (
+                        "This contains all the options for combining. Clicking this button will display a window for all the combine options."
+                    ),
+                    bullet_char = "\t",
+                    bullet_level = 1
+                ),
+
+                    l_tkinter_utils.LabelFormatText(
+                        "Include",
+                        font = self.header_font,
+                        bullet_level = 2
+                    ),
+                    l_tkinter_utils.LabelFormatText(
+                        (
+                            "This is where you choose which level elements (markers, beatmap objects, etc.) will be included in the combined level. "
+                                "A check mark besides the element means that the element will be included in the combined level. "
+                                "No check mark means the element will not be included.\n"
+                            "For example, if \"Markers\" is enabled, then all markers from the levels being combined will be included in the combined level. "
+                                "If \"Markers\" is disabled, then there would be no markers in the combined level.\n"
+                            "The program supports one-level combining, where you can add just one level. "
+                                "Changing the \"Include\" options can function as removing markers / checkpoints / etc. from a level.\n"
+                            "\n"
+                            "Note that if \"Checkpoints\" and/or \"Event Keyframes\" are unchecked, "
+                                "the combined level will still include the default first checkpoints and/or event keyframes "
+                                "which are derived from a new blank level."
+                        ),
+                        bullet_char = "\t",
+                        bullet_level = 2
+                    ),
+
+                    l_tkinter_utils.LabelFormatText(
+                        "Delete First",
+                        font = self.header_font,
+                        bullet_level = 2
+                    ),
+                    l_tkinter_utils.LabelFormatText(
+                        (
+                            "This dictates if first checkpoints / event keyframes should be included.\n"
+                            "If an element is checked, the first instance of that element (seen at the start of the level) "
+                                "for every level to be combined will not be included, and instead will be taken from the source level (see below). "
+                                "This means that there will only be one of that element at the start of the level and there would be no duplicates.\n"
+                            "If an element is unchecked, first instances of that element (seen at the start of the level) from all levels will be included, "
+                                "which will give out a level with duplicate checkpoints / event keyframes at the start of the level.\n"
+                        ),
+                        bullet_char = "\t",
+                        bullet_level = 2
+                    ),
+
+
+                l_tkinter_utils.LabelFormatText(
+                    "Base Level",
+                    font = self.header_font,
+                    bullet_level = 1
+                ),
+                l_tkinter_utils.LabelFormatText(
+                    (
+                        "This is a level in which all elements will be included regardless of the combine options.\n"
+                        "An example use case of this is where you are the host of a collab, and you have a base level with only markers and checkpoints. "
+                            "This base level is what you send out to your collab members. "
+                            "After receiving each person's part, you'd want to combine these parts, but in doing so, you'd duplicate the level's markers and checkpoints. "
+                            "Using the combine options won't help since if you were to not include the markers and checkpoints, there would be no markers and checkpoints in the combined level. "
+                            "This feature fixes that, where you can put the base level with only the markers and checkpoints in, then you can uncheck \"Markers\" and \"Checkpoints\" on the combine options. "
+                            "This will discard all the markers and checkpoints from the parts, but it'll still keep the markers and checkpoints from the base level, which will give a combined level with no duplicate markers and checkpoints."
+                    ),
+                    bullet_char = "\t",
+                    bullet_level = 1
+                ),
+
+                l_tkinter_utils.LabelFormatText(
+                    "Source Level",
+                    font = self.header_font,
+                    bullet_level = 1
+                ),
+                l_tkinter_utils.LabelFormatText(
+                    (
+                        "This is the level folder in which the metadata, audio, first checkpoints and event keyframes (if included), and other information will be derived from.\n"
+                        "The base level will be the source level, but if it's not entered, the first level in the list of levels will be used as the source level."
+                    ),
+                    bullet_char = "\t",
+                    bullet_level = 1
                 ),
             ]
         )
