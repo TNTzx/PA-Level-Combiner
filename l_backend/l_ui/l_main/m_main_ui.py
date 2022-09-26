@@ -213,14 +213,14 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
 
             form_result = l_tkinter_utils.form_messagebox(self, EntryBrowseForm, "Edit Level Folder Path")
 
+            if form_result is None:
+                return
+
             try:
                 m_checks.check_level_folder(self.get_version(), form_result)
             except m_ui_excs.LevelFolderImportException as exc:
                 l_tkinter_utils.messagebox(self, "Invalid level folder!", str(exc), (l_tkinter_utils.Options.ok, ))
                 continue
-
-            if form_result is None:
-                return
 
             break
 
@@ -436,7 +436,21 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
         """Opens the about menu."""
         self.w_about = l_tkinter_utils.window_open_if_closed(self.w_about, l_extra_info.About(self))
 
-    
+
     def open_github(self):
         """Opens the Github page."""
-        webbrowser.open("https://www.github.com/TNTzx/PA-Level-Combiner", new = 0, autoraise = True)
+        def show_error():
+            """Shows the error."""
+            l_tkinter_utils.error_messagebox(self, "The Chrome browser can't be found!")
+
+        try:
+            chrome = webbrowser.get("C:/Program Files (x86)/Google/Chrome/Application/chrome.exe")
+        except webbrowser.Error:
+            show_error()
+            return
+
+        if isinstance(chrome, webbrowser.GenericBrowser):
+            show_error()
+            return
+
+        chrome.open_new_tab("https://www.github.com/TNTzx/PA-Level-Combiner")
