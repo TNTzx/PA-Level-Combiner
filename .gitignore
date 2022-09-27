@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+# Custom!
+testcode.py
+.vscode
+default_venv_path.txt
