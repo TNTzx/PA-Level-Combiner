@@ -3,8 +3,6 @@
 
 from __future__ import annotations
 
-import typing as typ
-
 import tkinter as tk
 import tkinter.filedialog as tkfd
 
