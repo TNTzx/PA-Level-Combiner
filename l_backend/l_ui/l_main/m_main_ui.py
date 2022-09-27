@@ -61,8 +61,8 @@ class MainWindow(tk.Toplevel, m_main_mixin.MainWindowMixin):
             self.w_simple.w_version_select.initial
         )
 
-
-        self.w_simple.w_output.w_browse.w_entry.variable.set(combine_job.output_folder_path)
+        if combine_job.output_folder_path is not None:
+            self.w_simple.w_output.w_browse.w_entry.variable.set(combine_job.output_folder_path)
 
 
         self.w_requires_version = [
