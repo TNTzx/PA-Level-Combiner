@@ -1,0 +1,1 @@
+pyinstaller ./main.spec --clean --workpath="..\exes\output" --distpath="..\exes\output"
