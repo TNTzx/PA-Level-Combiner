@@ -9,6 +9,9 @@ import tkinter.filedialog as tkfd
 import winshell
 
 
+os.system("cls")
+
+
 def create_shortcut(target_file_path: str, save_path: str, icon_path: str = "", start_in_folder_path: str = "", description: str = ""):
     """Creates a shortcut."""
     winshell.CreateShortcut(
