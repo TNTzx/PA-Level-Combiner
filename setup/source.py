@@ -33,7 +33,7 @@ def ask_for_shortcut_save():
     root.withdraw()
 
     file_path = tkfd.asksaveasfilename(
-        title = "Open where to save your file.",
+        title = "Save the combiner's shortcut to where?",
         initialdir = os.getcwd(),
         initialfile = "PA Level Combiner",
         defaultextension = "*.lnk",
