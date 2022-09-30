@@ -5,10 +5,19 @@ title PA Level Combiner
 
 set codepath=%~dp0
 
-call :getpath "%codepath%..\.py_embedded\pythonw.exe"
-echo %interpreterpath%
+call :getpath "%codepath%..\.py_embedded\python.exe"
 
-"%interpreterpath%" "%codepath%main.py"
+echo Interpreter path: %interpreterpath%
+echo Launch path: "%codepath%launch.py"
+echo Main path: "%codepath%main.py"
+echo.
+echo Opening program...
+
+"%interpreterpath%" "%codepath%launch.py"
+
+echo Exiting program...
+
+exit
 
 
 :getpath
