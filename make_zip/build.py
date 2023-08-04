@@ -10,7 +10,7 @@ import zipfile as zipf
 
 CURRENT_DIR = osp.abspath(osp.dirname(osp.realpath(__file__)))
 REPO_DIR = osp.abspath(osp.join(CURRENT_DIR, ".."))
-OUTPUT_DIR = osp.abspath(osp.join(CURRENT_DIR, "..", "..", "zips"))
+OUTPUT_DIR = osp.abspath(osp.join(CURRENT_DIR, "..", "build"))
 if not osp.exists(OUTPUT_DIR):
     os.mkdir(OUTPUT_DIR)
 

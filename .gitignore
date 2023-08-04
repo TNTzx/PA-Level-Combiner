@@ -132,3 +132,4 @@ dmypy.json
 testcode.py
 default_venv_path.txt
 .py_embedded/
+build/

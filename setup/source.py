@@ -6,21 +6,32 @@ import os
 import tkinter as tk
 import tkinter.filedialog as tkfd
 
-import winshell
+from win32com.client import Dispatch
 
 
 os.system("cls")
 
 
-def create_shortcut(target_file_path: str, save_path: str, icon_path: str = "", start_in_folder_path: str = "", description: str = ""):
+def create_shortcut(target_file_path: str, save_path: str, icon_path: str | None = None, start_in_folder_path: str = "", description: str = ""):
     """Creates a shortcut."""
-    winshell.CreateShortcut(
-        Path = save_path,
-        Target = target_file_path,
-        StartIn = start_in_folder_path,
-        Icon = (icon_path, 0),
-        Description = description
-    )
+    shell = Dispatch("WScript.Shell")
+    shortcut = shell.CreateShortCut(save_path)
+    shortcut.Targetpath = target_file_path
+    shortcut.WorkingDirectory = start_in_folder_path
+    shortcut.Description = description
+
+    if (icon_path is not None):
+        shortcut.IconLocation = icon_path
+
+    shortcut.save()
+
+    # winshell.CreateShortcut(
+    #     Path = save_path,
+    #     Target = target_file_path,
+    #     StartIn = start_in_folder_path,
+    #     Icon = (icon_path, 0),
+    #     Description = description
+    # )
 
 
 CURRENT_DIR = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
