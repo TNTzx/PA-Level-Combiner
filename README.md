@@ -1,3 +1,6 @@
+# DEPRECATED
+This repository is deprecated. The new and more improved version is here: https://github.com/PA-Level-Combiner/PA-Level-Combiner-v3
+
 # PA Level Combiner
 
 A program that combines two levels of the same song into one.
